@@ -3,9 +3,6 @@
 @tailwind utilities;
 
 @layer utilities {
-    .page {
-        @apply max-w-xl h-[calc(100vh-20px)] mx-auto p-4 rounded-2xl bg-[#fdffe2];
-    }
 
     * {
         font-family: "Inter";
@@ -18,5 +15,13 @@
 
     #root {
         @apply m-0 py-[10px];
+    }
+
+    .layout {
+        @apply max-w-xl h-[calc(100vh-20px)] mx-auto rounded-2xl bg-[#fdffe2] overflow-y-auto overflow-x-hidden;
+    }
+
+    .page {
+        @apply p-4
     }
 }

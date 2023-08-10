@@ -1,5 +1,40 @@
+import { NavLink } from "react-router-dom";
+
 const NavBar = () => {
-    return <div>NavBar</div>;
+    return (
+        <nav className="w-full grid grid-cols-3 text-center gap-4 border-none border-b border-black">
+            <NavLink
+                to="/"
+                className={({ isActive }) =>
+                    `border-0 border-b-2  py-2 ${
+                        isActive ? "border-black" : " border-transparent"
+                    }`
+                }
+            >
+                Dash
+            </NavLink>
+            <NavLink
+                to="/activity"
+                className={({ isActive }) =>
+                    `border-0 border-b-2  py-2 ${
+                        isActive ? "border-black" : "border-transparent"
+                    }`
+                }
+            >
+                Activity
+            </NavLink>
+            <NavLink
+                to="/activity"
+                className={({ isActive }) =>
+                    `border-0 border-b-2  py-2 ${
+                        isActive ? "border-black" : "border-transparent"
+                    }`
+                }
+            >
+                Setting
+            </NavLink>
+        </nav>
+    );
 };
 
 export default NavBar;
