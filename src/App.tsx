@@ -1,6 +1,6 @@
 import { ContextProvider } from "./context";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home } from "./pages";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Activity, Home, Login } from "./pages";
 
 const App = () => {
     return (
@@ -8,7 +8,11 @@ const App = () => {
             <BrowserRouter>
                 <ContextProvider>
                     <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/activity" element={<Activity />} />
                         <Route path="/" element={<Home />} />
+
+                        <Route path="*" element={<Navigate to="/" />} />
                     </Routes>
                 </ContextProvider>
             </BrowserRouter>

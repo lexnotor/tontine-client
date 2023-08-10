@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .page {
+        @apply max-w-xl h-[calc(100vh-20px)] mx-auto p-4 rounded-2xl bg-[#fdffe2];
+    }
+
+    * {
+        font-family: "Inter";
+    }
+
+    body {
+        font-size: 14px;
+        @apply w-screen h-screen bg-[#2e2e2e] text-[#191919] p-0 m-0;
+    }
+
+    #root {
+        @apply m-0 py-[10px];
+    }
+}
