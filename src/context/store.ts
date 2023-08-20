@@ -1,8 +1,18 @@
-import { createContext, useContext } from "react";
+import React, { createContext, useContext } from "react";
 
-const initialState = {};
+export type ModalAction_A = { activity: string; now: boolean };
+interface GlobalContextType {
+    addingMember?: ModalAction_A;
+    setAddingMember?: React.Dispatch<React.SetStateAction<ModalAction_A>>;
 
-const StateContext = createContext(initialState);
+    deletingMember?: ModalAction_A;
+    setDeletingMember?: React.Dispatch<React.SetStateAction<ModalAction_A>>;
+
+    savingFees?: ModalAction_A;
+    setSavingFees?: React.Dispatch<React.SetStateAction<ModalAction_A>>;
+}
+
+const StateContext = createContext<GlobalContextType>({});
 
 const useAppContext = () => useContext(StateContext);
 

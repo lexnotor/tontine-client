@@ -6,7 +6,7 @@ const NavBar = () => {
             <NavLink
                 to="/"
                 className={({ isActive }) =>
-                    `border-0 border-b-2  py-2 ${
+                    `border-0 border-b-2 duration-500 py-2 ${
                         isActive ? "border-black" : " border-transparent"
                     }`
                 }
@@ -16,7 +16,7 @@ const NavBar = () => {
             <NavLink
                 to="/activity"
                 className={({ isActive }) =>
-                    `border-0 border-b-2  py-2 ${
+                    `border-0 border-b-2 duration-500 py-2 ${
                         isActive ? "border-black" : "border-transparent"
                     }`
                 }
@@ -24,9 +24,9 @@ const NavBar = () => {
                 Activity
             </NavLink>
             <NavLink
-                to="/activity"
+                to="/settings"
                 className={({ isActive }) =>
-                    `border-0 border-b-2  py-2 ${
+                    `border-0 border-b-2 duration-500 py-2 ${
                         isActive ? "border-black" : "border-transparent"
                     }`
                 }

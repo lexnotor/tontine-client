@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Red+Hat+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,23 +6,28 @@
 @layer utilities {
 
     * {
-        font-family: "Inter";
+        font-family: "Montserrat";
     }
 
     body {
         font-size: 14px;
-        @apply w-screen h-screen bg-[#2e2e2e] text-[#191919] p-0 m-0;
+        @apply w-screen h-screen bg-[#2e2e2e] text-[#1f1f1f] p-0 m-0;
     }
+
 
     #root {
         @apply m-0 py-[10px];
     }
 
     .layout {
-        @apply max-w-xl h-[calc(100vh-20px)] mx-auto rounded-2xl bg-[#fdffe2] overflow-y-auto overflow-x-hidden;
+        @apply max-w-md h-[calc(100vh-20px)] mx-auto rounded-2xl bg-[#ffffff] overflow-y-auto overflow-x-hidden;
     }
 
     .page {
         @apply p-4
+    }
+
+    input:focus {
+        @apply outline-none
     }
 }
