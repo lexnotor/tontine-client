@@ -2,7 +2,7 @@ import LoginForm from "@/components/LoginForm";
 
 const Login = () => {
     return (
-        <div className="pt-2 max-w-md">
+        <div className="pt-2 max-w-md mx-auto">
             <div className="p-4 rounded-t-xl h-[calc(100vh-0.5rem)] bg-white">
                 <h1 className="text-xl font-bold mb-6">Totine</h1>
                 <h2 className="text-3xl mb-2">Connectez vous ici</h2>

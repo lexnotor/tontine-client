@@ -20,7 +20,7 @@
     }
 
     .layout {
-        @apply max-w-md h-[calc(100vh-20px)] mx-auto rounded-2xl bg-[#ffffff] overflow-y-auto overflow-x-hidden;
+        @apply max-w-md h-[calc(100vh-20px)] mx-auto rounded-t-2xl bg-[#ffffff] overflow-y-auto overflow-x-hidden;
     }
 
     .page {
