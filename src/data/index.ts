@@ -14,7 +14,7 @@ const activityList = [
                 description: faker.word.words({ count: { min: 30, max: 50 } }),
                 start: new Date().toISOString(),
                 end: new Date(Date.now() + 99999 ** 2).toISOString(),
-                cycle: new Date().toISOString(),
+                cycle: faker.word.words(1),
                 amount_to_give: "",
                 status: ["inProgress", "completed"][faker.number.int(1)],
                 members: faker.number.int({

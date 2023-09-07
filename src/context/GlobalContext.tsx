@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { ModalAction_A, StateContext } from "./store";
+import React, { createContext, useContext, useState } from "react";
+import { GlobalContextType, ModalAction_A } from "./type";
+
+const StateContext = createContext<GlobalContextType>({});
 
 const GlobalContextProvider = ({
     children,
@@ -25,4 +27,9 @@ const GlobalContextProvider = ({
         </StateContext.Provider>
     );
 };
+
+const useAppContext = () => useContext(StateContext);
+
 export default GlobalContextProvider;
+
+export { StateContext, useAppContext };

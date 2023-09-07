@@ -86,7 +86,7 @@ const ActivityDetails = () => {
                         <CiTimer />
                     </span>
                     <Tag className="text-base" color="orange">
-                        {new Date(item.cycle).toLocaleDateString()}
+                        {item.cycle}
                     </Tag>
                 </p>
             </div>
