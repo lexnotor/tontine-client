@@ -1,7 +1,13 @@
-import React, { createContext, useContext, useReducer } from "react";
-import { CotisationContextType, CotisationType, CustomeAction } from "./type";
 import { cotisationService } from "@/services";
 import { SaveCotisatioPayload } from "@/services/type";
+import React, { createContext, useContext, useReducer } from "react";
+import {
+    CotisationContextType,
+    CotisationType,
+    CustomeAction,
+    ThreadActionType,
+    ThreadType,
+} from "./type";
 
 // ----------------- CONTEXT -----------------
 const cotisationContext = createContext<CotisationContextType>({});
@@ -57,41 +63,126 @@ const CotisationContextProvider = ({
         [],
     );
 
+    const [thread, setThread] = useReducer(
+        (state: ThreadType<AllType>[], action: ThreadActionType<AllType>) => {
+            switch (action.type) {
+                case "add": {
+                    const add: ThreadType<AllType> = {
+                        id: action.payload.id,
+                        status: "LOADING",
+                        action: action.payload.action,
+                    };
+                    return [add, ...state];
+                }
+                case "success": {
+                    const success = state.find((task) => task.id == action.id);
+                    success.status = "SUCCESS";
+                    return state;
+                }
+                case "error": {
+                    const error = state.find((task) => task.id == action.id);
+                    error.status = "ERROR";
+                    return state;
+                }
+
+                default:
+                    return state;
+            }
+        },
+        [],
+    );
+
     const getAllCotisations = () => {
+        const id = crypto.randomUUID();
+        setThread({ payload: { action: "SET_COTISATIONS", id }, type: "add" });
         cotisationService
             .getAllCotisation()
-            .then((data) =>
-                cotisationsDisp({ type: "SET_COTISATIONS", payload: data }),
-            )
-            .catch((error) => alert(error.message));
+            .then((data) => {
+                cotisationsDisp({ type: "SET_COTISATIONS", payload: data });
+                setThread({
+                    id,
+                    type: "success",
+                });
+            })
+            .catch((error) => {
+                alert(error.message);
+                setThread({
+                    id,
+                    type: "error",
+                });
+            });
     };
 
     const createCotisation = (payload: SaveCotisatioPayload) => {
+        const id = crypto.randomUUID();
+        setThread({ payload: { action: "ADD_COTISATION", id }, type: "add" });
         cotisationService
             .createCotisation(payload)
-            .then((data) =>
-                cotisationsDisp({ type: "ADD_COTISATION", payload: data }),
-            )
-            .catch((error) => alert(error.message));
+            .then((data) => {
+                cotisationsDisp({ type: "ADD_COTISATION", payload: data });
+                setThread({
+                    id,
+                    type: "success",
+                });
+            })
+            .catch((error) => {
+                alert(error.message);
+                setThread({
+                    id,
+                    type: "error",
+                });
+            });
     };
 
     const updateCotisation = (
-        id: string,
+        cotisationId: string,
         payload: Partial<SaveCotisatioPayload>,
     ) => {
+        const id = crypto.randomUUID();
+        setThread({
+            payload: { action: "REPLACE_COTISATION", id },
+            type: "add",
+        });
         cotisationService
-            .updateCotisation(id, payload)
-            .then((data) =>
-                cotisationsDisp({ type: "REPLACE_COTISATION", payload: data }),
-            )
-            .catch((error) => alert(error.message));
+            .updateCotisation(cotisationId, payload)
+            .then((data) => {
+                cotisationsDisp({ type: "REPLACE_COTISATION", payload: data });
+                setThread({
+                    id,
+                    type: "success",
+                });
+            })
+            .catch((error) => {
+                alert(error.message);
+                setThread({
+                    id,
+                    type: "error",
+                });
+            });
     };
 
     const deleteCotisation = (payload: string) => {
+        const id = crypto.randomUUID();
+        setThread({
+            payload: { action: "REMOVE_COTISATION", id },
+            type: "add",
+        });
         cotisationService
             .deleteCotisation(payload)
-            .then(() => cotisationsDisp({ type: "REMOVE_COTISATION", payload }))
-            .catch((error) => alert(error.message));
+            .then(() => {
+                cotisationsDisp({ type: "REMOVE_COTISATION", payload });
+                setThread({
+                    id,
+                    type: "success",
+                });
+            })
+            .catch((error) => {
+                alert(error.message);
+                setThread({
+                    id,
+                    type: "error",
+                });
+            });
     };
     return (
         <cotisationContext.Provider
@@ -101,6 +192,7 @@ const CotisationContextProvider = ({
                 createCotisation,
                 updateCotisation,
                 deleteCotisation,
+                thread,
             }}
         >
             {children}

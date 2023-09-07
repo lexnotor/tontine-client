@@ -11,6 +11,7 @@ export interface ActivityContextType {
         id: string,
         payload: Partial<CreateActivityPayload>,
     ) => void;
+    thread?: ThreadType<AllType>[];
 }
 
 export interface MemberContextType {
@@ -19,6 +20,7 @@ export interface MemberContextType {
     createMember?: (payload: AddMemberPayload) => void;
     deleteMember?: (payload: string) => void;
     updateMember?: (id: string, payload: Partial<AddMemberPayload>) => void;
+    thread?: ThreadType<AllType>[];
 }
 
 export interface CotisationContextType {
@@ -30,6 +32,7 @@ export interface CotisationContextType {
         id: string,
         payload: Partial<SaveCotisatioPayload>,
     ) => void;
+    thread?: ThreadType<AllType>[];
 }
 
 export type CustomeAction<T = any, D = string> = {
@@ -76,3 +79,24 @@ export interface CotisationType {
     activityId: string;
     memberId: string;
 }
+
+export interface ThreadType<T = string> {
+    id: string;
+    status: "LOADING" | "SUCCESS" | "ERROR";
+    action: T;
+    payload?: any;
+    message?: string;
+}
+
+export type ThreadActionType<T = string> =
+    | {
+          payload: {
+              id: string;
+              action: T;
+          };
+          type: "add";
+      }
+    | {
+          id: string;
+          type: "success" | "error";
+      };

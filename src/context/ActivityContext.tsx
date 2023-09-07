@@ -1,7 +1,13 @@
 import { activityService } from "@/services";
 import { CreateActivityPayload } from "@/services/type";
 import React, { createContext, useContext, useReducer } from "react";
-import { ActivityType, CustomeAction, ActivityContextType } from "./type";
+import {
+    ActivityType,
+    CustomeAction,
+    ActivityContextType,
+    ThreadType,
+    ThreadActionType,
+} from "./type";
 
 // ------------- CONTEXT_CREATION -------------
 const activityContext = createContext<ActivityContextType>({});
@@ -54,41 +60,120 @@ const ActivityContextProvider = ({
         [],
     );
 
+    const [thread, setThread] = useReducer(
+        (state: ThreadType<AllType>[], action: ThreadActionType<AllType>) => {
+            switch (action.type) {
+                case "add": {
+                    const add: ThreadType<AllType> = {
+                        id: action.payload.id,
+                        status: "LOADING",
+                        action: action.payload.action,
+                    };
+                    return [add, ...state];
+                }
+                case "success": {
+                    const success = state.find((task) => task.id == action.id);
+                    success.status = "SUCCESS";
+                    return state;
+                }
+                case "error": {
+                    const error = state.find((task) => task.id == action.id);
+                    error.status = "ERROR";
+                    return state;
+                }
+
+                default:
+                    return state;
+            }
+        },
+        [],
+    );
+
     const getAllActivities = () => {
+        const id = crypto.randomUUID();
+        setThread({ payload: { action: "SET_ACTIVITIES", id }, type: "add" });
         activityService
             .getAllActivities()
-            .then((data) =>
-                activitiesDisp({ type: "SET_ACTIVITIES", payload: data }),
-            )
-            .catch((error) => alert(error.message));
+            .then((data) => {
+                activitiesDisp({ type: "SET_ACTIVITIES", payload: data });
+                setThread({
+                    id,
+                    type: "success",
+                });
+            })
+            .catch((error) => {
+                alert(error.message);
+                setThread({
+                    id,
+                    type: "error",
+                });
+            });
     };
 
     const createActivity = (payload: CreateActivityPayload) => {
+        const id = crypto.randomUUID();
+        setThread({ payload: { action: "ADD_ACTIVITY", id }, type: "add" });
         activityService
             .createActivity(payload)
-            .then((data) =>
-                activitiesDisp({ type: "ADD_ACTIVITY", payload: data }),
-            )
-            .catch((error) => alert(error.message));
+            .then((data) => {
+                activitiesDisp({ type: "ADD_ACTIVITY", payload: data });
+                setThread({
+                    id,
+                    type: "success",
+                });
+            })
+            .catch((error) => {
+                alert(error.message);
+                setThread({
+                    id,
+                    type: "error",
+                });
+            });
     };
 
     const updateActivity = (
-        id: string,
+        activityId: string,
         payload: Partial<CreateActivityPayload>,
     ) => {
+        const id = crypto.randomUUID();
+        setThread({ payload: { action: "REPLACE_ACTIVITY", id }, type: "add" });
         activityService
-            .updateActivity(id, payload)
-            .then((data) =>
-                activitiesDisp({ type: "REPLACE_ACTIVITY", payload: data }),
-            )
-            .catch((error) => alert(error.message));
+            .updateActivity(activityId, payload)
+            .then((data) => {
+                activitiesDisp({ type: "REPLACE_ACTIVITY", payload: data });
+                setThread({
+                    id,
+                    type: "success",
+                });
+            })
+            .catch((error) => {
+                alert(error.message);
+                setThread({
+                    id,
+                    type: "error",
+                });
+            });
     };
 
     const deleteActivity = (payload: string) => {
+        const id = crypto.randomUUID();
+        setThread({ payload: { action: "REMOVE_ACTIVITY", id }, type: "add" });
         activityService
             .deleteActivity(payload)
-            .then(() => activitiesDisp({ type: "REMOVE_ACTIVITY", payload }))
-            .catch((error) => alert(error.message));
+            .then(() => {
+                activitiesDisp({ type: "REMOVE_ACTIVITY", payload });
+                setThread({
+                    id,
+                    type: "success",
+                });
+            })
+            .catch((error) => {
+                alert(error.message);
+                setThread({
+                    id,
+                    type: "error",
+                });
+            });
     };
 
     return (
@@ -99,6 +184,7 @@ const ActivityContextProvider = ({
                 createActivity,
                 deleteActivity,
                 updateActivity,
+                thread,
             }}
         >
             {children}
