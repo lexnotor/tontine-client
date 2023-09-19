@@ -99,7 +99,6 @@ const ActivityContextProvider = ({
         activityService
             .getAllActivities(token?.token)
             .then((data) => {
-                console.log(data);
                 activitiesDisp({ type: "SET_ACTIVITIES", payload: data });
                 setThread({
                     id,

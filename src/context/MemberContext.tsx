@@ -8,9 +8,10 @@ import {
     ThreadActionType,
     ThreadType,
 } from "./type";
+import { useAuth } from "@/hooks";
 
 // ----------------- CONTEXT -----------------
-const memberContext = createContext<MemberContextType>({});
+const memberContext = createContext<MemberContextType<AllType>>({});
 
 type AllPayload = MemberType | MemberType[] | string;
 type AllType =
@@ -21,6 +22,10 @@ type AllType =
 
 // ----------------- PROVIDER -----------------
 const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
+    const {
+        auth: { token },
+    } = useAuth();
+
     const [members, membersDisp] = useReducer(
         (state: MemberType[], action: CustomeAction<AllPayload, AllType>) => {
             switch (action.type) {
@@ -90,7 +95,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
 
         memberService
-            .getAllMember()
+            .getAllMember(token.token)
             .then((data) => {
                 membersDisp({ type: "SET_MEMBERS", payload: data });
                 setThread({
@@ -111,9 +116,10 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
         const id = crypto.randomUUID();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
         memberService
-            .addMember(payload)
-            .then((data) => {
-                membersDisp({ type: "ADD_MEMBER", payload: data });
+            .addMember(payload, token.token)
+            .then(() => {
+                // membersDisp({ type: "ADD_MEMBER", payload: data });
+                getAllMembers();
                 setThread({
                     id,
                     type: "success",
@@ -135,7 +141,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
         const id = crypto.randomUUID();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
         memberService
-            .updateOne(memberId, payload)
+            .updateOne(memberId, payload, token.token)
             .then((data) => {
                 membersDisp({ type: "REPLACE_MEMBER", payload: data });
                 setThread({
@@ -156,9 +162,10 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
         const id = crypto.randomUUID();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
         memberService
-            .deleteMember(payload)
+            .deleteMember(payload, token.token)
             .then(() => {
-                membersDisp({ type: "REMOVE_MEMBER", payload });
+                // membersDisp({ type: "REMOVE_MEMBER", payload });
+                getAllMembers();
                 setThread({
                     id,
                     type: "success",

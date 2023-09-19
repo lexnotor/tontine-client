@@ -13,7 +13,8 @@ export interface AddMemberPayload {
     name: string;
     postname: string;
     phone: string;
-    status: "beneficiary";
+    activity_id: string;
+    status: "isBeneficiary" | "isNoBeneficiary";
 }
 
 export interface CreateActivityPayload {

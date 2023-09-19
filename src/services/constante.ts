@@ -9,10 +9,9 @@ export const authUrl = {
 };
 
 export const memberUrl = {
-    addMember: `${baseUrl}/members`,
-    getAll: `${baseUrl}/members`,
-    getAllByActivity: (activityId: string) =>
-        `${baseUrl}/members/${activityId}`,
+    addMember: `${baseUrl}/member`,
+    getAll: `${baseUrl}/member`,
+    getAllByActivity: (activityId: string) => `${baseUrl}/member/${activityId}`,
     deleteOne: (memberId: string) => `${baseUrl}/member/${memberId}`,
     updateOne: (memberId: string) => `${baseUrl}/member/${memberId}`,
 };

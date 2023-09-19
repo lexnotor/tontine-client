@@ -74,6 +74,7 @@ export interface AuthType {
 export interface ActivityType {
     id?: string;
     designation: string;
+    description: string;
     start: string;
     end: string;
     cycle: string;
@@ -88,7 +89,8 @@ export interface MemberType {
     name: string;
     postname: string;
     phone: string;
-    status: "beneficiary";
+    status: "isBeneficiary" | "isNoBeneficiary";
+    activity_id: string;
 }
 
 export interface CotisationType {

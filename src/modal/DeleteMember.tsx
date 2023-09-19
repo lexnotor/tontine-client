@@ -1,14 +1,26 @@
 import { useAppContext } from "@/context";
-import { members } from "@/data";
+import { useMembers } from "@/hooks";
 import { Modal } from "antd";
+import { useMemo, useRef } from "react";
 
 const DeleteMember = () => {
-    const { setDeletingMember } = useAppContext();
+    const { setDeletingMember, deletingMember } = useAppContext();
+    const { deleteMember, members } = useMembers();
+
+    const memberRef = useRef<HTMLSelectElement>();
 
     const submit: React.FormEventHandler = (e) => {
         e.preventDefault();
+
+        deleteMember(memberRef.current.value);
         setDeletingMember({ activity: null, now: false });
     };
+
+    const memberList = useMemo(() => {
+        return members.filter(
+            (item) => item.activity_id == deletingMember.activity,
+        );
+    }, [members, deletingMember]);
 
     return (
         <Modal
@@ -25,8 +37,11 @@ const DeleteMember = () => {
             <form onSubmit={submit}>
                 <div className="flex flex-col gap-2">
                     <label htmlFor="last">Selectionner un membre :</label>
-                    <select className="px-4 py-2 border bg-transparent rounded-lg">
-                        {members.map((item) => (
+                    <select
+                        ref={memberRef}
+                        className="px-4 py-2 border bg-transparent rounded-lg"
+                    >
+                        {memberList.map((item) => (
                             <option
                                 key={item.id}
                                 value={item.id}

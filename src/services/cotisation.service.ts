@@ -2,10 +2,13 @@ import axios from "axios";
 import { SaveCotisatioPayload } from "./type";
 import { cotisationUrl } from "./constante";
 
-const createCotisation = async (payload: SaveCotisatioPayload) => {
+const createCotisation = async (
+    payload: SaveCotisatioPayload,
+    token: string,
+) => {
     try {
         const res = await axios.post(cotisationUrl.saveCotisation, payload, {
-            headers: { Authorization: "" },
+            headers: { Authorization: `Bearer ${token}` },
         });
         return res.data;
     } catch (error) {
@@ -13,10 +16,10 @@ const createCotisation = async (payload: SaveCotisatioPayload) => {
     }
 };
 
-const getAllCotisation = async () => {
+const getAllCotisation = async (token: string) => {
     try {
         const res = await axios.get(cotisationUrl.getAll, {
-            headers: { Authorization: "" },
+            headers: { Authorization: `Bearer ${token}` },
         });
         return res.data;
     } catch (error) {
@@ -24,12 +27,12 @@ const getAllCotisation = async () => {
     }
 };
 
-const getCotisationByActivity = async (activityId: string) => {
+const getCotisationByActivity = async (activityId: string, token: string) => {
     try {
         const res = await axios.get(
             cotisationUrl.getAllByActivity(activityId),
             {
-                headers: { Authorization: "" },
+                headers: { Authorization: `Bearer ${token}` },
             },
         );
         return res.data;
@@ -41,13 +44,14 @@ const getCotisationByActivity = async (activityId: string) => {
 const updateCotisation = async (
     activityId: string,
     payload: Partial<SaveCotisatioPayload>,
+    token: string,
 ) => {
     try {
         const res = await axios.put(
             cotisationUrl.updateCotisation(activityId),
             payload,
             {
-                headers: { Authorization: "" },
+                headers: { Authorization: `Bearer ${token}` },
             },
         );
         return res.data;
@@ -56,12 +60,12 @@ const updateCotisation = async (
     }
 };
 
-const deleteCotisation = async (activityId: string) => {
+const deleteCotisation = async (activityId: string, token: string) => {
     try {
         const res = await axios.delete(
             cotisationUrl.deleteCotisation(activityId),
             {
-                headers: { Authorization: "" },
+                headers: { Authorization: `Bearer ${token}` },
             },
         );
         return res.data;

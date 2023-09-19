@@ -1,18 +1,18 @@
-import { members } from "@/data";
+import { MemberType } from "@/context/type";
 import { Table } from "antd";
 
-const ListeMember = () => {
+const ListeMember = ({ data = [] }: { data?: MemberType[] }) => {
     return (
         <>
             <Table
-                dataSource={members}
+                dataSource={data}
                 columns={[
                     { title: "Nom", dataIndex: "name" },
                     { title: "Prenom", dataIndex: "postname" },
                     {
                         title: "Next",
                         dataIndex: "next",
-                        render: (text) => new Date(text).toDateString(),
+                        render: () => new Date().toDateString(),
                     },
                     { title: "Phone", dataIndex: "phone" },
                 ]}
@@ -31,6 +31,7 @@ const ListeMember = () => {
                 }}
                 scroll={{ x: "max-content" }}
                 pagination={false}
+                rowKey={(record) => record.id}
             />
         </>
     );

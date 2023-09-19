@@ -1,15 +1,33 @@
 import { useAppContext } from "@/context";
-import { members } from "@/data";
+import { useCotisation, useMembers } from "@/hooks";
 import { Modal } from "antd";
-import React from "react";
+import React, { useMemo, useRef } from "react";
 
 const AddFee = () => {
-    const { setSavingFees } = useAppContext();
+    const { setSavingFees, savingFees } = useAppContext();
+    const { members } = useMembers();
+    const { createCotisation } = useCotisation();
+
+    const memberRef = useRef<HTMLSelectElement>();
+    const amountRef = useRef<HTMLInputElement>();
 
     const submit: React.FormEventHandler = (e) => {
         e.preventDefault();
+        const payload: Parameters<typeof createCotisation>[number] = {
+            activityId: savingFees.activity,
+            amount: +amountRef.current.value,
+            memberId: memberRef.current.value,
+        };
+        createCotisation(payload);
         setSavingFees({ activity: null, now: false });
+
+        return payload;
     };
+    const memberList = useMemo(() => {
+        return members.filter(
+            (item) => item.activity_id == savingFees.activity,
+        );
+    }, [members, savingFees]);
 
     return (
         <Modal
@@ -26,8 +44,11 @@ const AddFee = () => {
             <form onSubmit={submit} className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2">
                     <label htmlFor="last">Selectionner un membre :</label>
-                    <select className="px-4 py-2 border bg-transparent rounded-lg">
-                        {members.map((item) => (
+                    <select
+                        ref={memberRef}
+                        className="px-4 py-2 border bg-transparent rounded-lg"
+                    >
+                        {memberList.map((item) => (
                             <option
                                 key={item.id}
                                 value={item.id}
@@ -45,6 +66,7 @@ const AddFee = () => {
                             type="text"
                             name="first"
                             id="first"
+                            ref={amountRef}
                             className="w-[calc(100%-4rem)] border px-4 py-1 rounded-lg"
                         />
                         <select

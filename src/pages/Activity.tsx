@@ -12,7 +12,7 @@ const Activity = () => {
 
     switch (searchParam.get("do")) {
         case "one":
-            return <ActivityDetails />;
+            return <ActivityDetails activityId={searchParam.get("id")} />;
 
         default:
             return <ActivityList data={activities} />;

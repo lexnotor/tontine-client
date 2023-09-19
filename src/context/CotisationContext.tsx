@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks";
 import { cotisationService } from "@/services";
 import { SaveCotisatioPayload } from "@/services/type";
 import React, { createContext, useContext, useReducer } from "react";
@@ -10,7 +11,7 @@ import {
 } from "./type";
 
 // ----------------- CONTEXT -----------------
-const cotisationContext = createContext<CotisationContextType>({});
+const cotisationContext = createContext<CotisationContextType<AllType>>({});
 
 type AllPayload = CotisationType | CotisationType[] | string;
 type AllType =
@@ -24,6 +25,9 @@ const CotisationContextProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
+    const {
+        auth: { token },
+    } = useAuth();
     const [cotisations, cotisationsDisp] = useReducer(
         (
             state: CotisationType[],
@@ -96,7 +100,7 @@ const CotisationContextProvider = ({
         const id = crypto.randomUUID();
         setThread({ payload: { action: "SET_COTISATIONS", id }, type: "add" });
         cotisationService
-            .getAllCotisation()
+            .getAllCotisation(token.token)
             .then((data) => {
                 cotisationsDisp({ type: "SET_COTISATIONS", payload: data });
                 setThread({
@@ -117,9 +121,10 @@ const CotisationContextProvider = ({
         const id = crypto.randomUUID();
         setThread({ payload: { action: "ADD_COTISATION", id }, type: "add" });
         cotisationService
-            .createCotisation(payload)
-            .then((data) => {
-                cotisationsDisp({ type: "ADD_COTISATION", payload: data });
+            .createCotisation(payload, token.token)
+            .then(() => {
+                // cotisationsDisp({ type: "ADD_COTISATION", payload: data });
+                getAllCotisations();
                 setThread({
                     id,
                     type: "success",
@@ -144,7 +149,7 @@ const CotisationContextProvider = ({
             type: "add",
         });
         cotisationService
-            .updateCotisation(cotisationId, payload)
+            .updateCotisation(cotisationId, payload, token.token)
             .then((data) => {
                 cotisationsDisp({ type: "REPLACE_COTISATION", payload: data });
                 setThread({
@@ -168,9 +173,10 @@ const CotisationContextProvider = ({
             type: "add",
         });
         cotisationService
-            .deleteCotisation(payload)
+            .deleteCotisation(payload, token.token)
             .then(() => {
-                cotisationsDisp({ type: "REMOVE_COTISATION", payload });
+                // cotisationsDisp({ type: "REMOVE_COTISATION", payload });
+                getAllCotisations();
                 setThread({
                     id,
                     type: "success",

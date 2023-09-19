@@ -1,12 +1,27 @@
 import { useAppContext } from "@/context";
+import { useMembers } from "@/hooks";
 import { Modal } from "antd";
-import React from "react";
+import React, { useRef } from "react";
 
 const AddMember = () => {
-    const { setAddingMember } = useAppContext();
+    const { setAddingMember, addingMember } = useAppContext();
+    const { createMember } = useMembers();
+
+    const nameRef = useRef<HTMLInputElement>();
+    const lastnameRef = useRef<HTMLInputElement>();
+    const phoneRef = useRef<HTMLInputElement>();
 
     const submit: React.FormEventHandler = (e) => {
         e.preventDefault();
+
+        const payload: Parameters<typeof createMember>[number] = {
+            activity_id: addingMember.activity,
+            name: nameRef.current.value.trim(),
+            phone: phoneRef.current.value.trim(),
+            postname: lastnameRef.current.value.trim(),
+            status: "isNoBeneficiary",
+        };
+        createMember(payload);
         setAddingMember({ activity: null, now: false });
     };
     return (
@@ -29,6 +44,7 @@ const AddMember = () => {
                         type="text"
                         name="last"
                         id="last"
+                        ref={nameRef}
                         autoFocus
                         className="border px-4 py-1 rounded-lg"
                     />
@@ -39,6 +55,7 @@ const AddMember = () => {
                         type="text"
                         name="first"
                         id="first"
+                        ref={lastnameRef}
                         className="border px-4 py-1 rounded-lg"
                     />
                 </div>
@@ -48,6 +65,7 @@ const AddMember = () => {
                         type="text"
                         name="phone"
                         id="phone"
+                        ref={phoneRef}
                         className="border px-4 py-1 rounded-lg"
                     />
                 </div>
