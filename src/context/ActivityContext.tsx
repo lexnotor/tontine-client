@@ -8,15 +8,16 @@ import {
     ThreadType,
     ThreadActionType,
 } from "./type";
+import { useAuthContext } from ".";
 
 // ------------- CONTEXT_CREATION -------------
-const activityContext = createContext<ActivityContextType>({});
 type AllPayload = ActivityType | ActivityType[] | string;
 type AllType =
     | "ADD_ACTIVITY"
     | "REMOVE_ACTIVITY"
     | "REPLACE_ACTIVITY"
     | "SET_ACTIVITIES";
+const activityContext = createContext<ActivityContextType<AllType>>({});
 
 // ------------- CONTEXT PROVIDER -------------
 const ActivityContextProvider = ({
@@ -24,6 +25,9 @@ const ActivityContextProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
+    const {
+        auth: { token },
+    } = useAuthContext();
     const [activities, activitiesDisp] = useReducer(
         (state: ActivityType[], action: CustomeAction<AllPayload, AllType>) => {
             switch (action.type) {
@@ -93,8 +97,9 @@ const ActivityContextProvider = ({
         const id = crypto.randomUUID();
         setThread({ payload: { action: "SET_ACTIVITIES", id }, type: "add" });
         activityService
-            .getAllActivities()
+            .getAllActivities(token?.token)
             .then((data) => {
+                console.log(data);
                 activitiesDisp({ type: "SET_ACTIVITIES", payload: data });
                 setThread({
                     id,
@@ -114,7 +119,7 @@ const ActivityContextProvider = ({
         const id = crypto.randomUUID();
         setThread({ payload: { action: "ADD_ACTIVITY", id }, type: "add" });
         activityService
-            .createActivity(payload)
+            .createActivity(payload, token?.token)
             .then((data) => {
                 activitiesDisp({ type: "ADD_ACTIVITY", payload: data });
                 setThread({
@@ -138,7 +143,7 @@ const ActivityContextProvider = ({
         const id = crypto.randomUUID();
         setThread({ payload: { action: "REPLACE_ACTIVITY", id }, type: "add" });
         activityService
-            .updateActivity(activityId, payload)
+            .updateActivity(activityId, payload, token?.token)
             .then((data) => {
                 activitiesDisp({ type: "REPLACE_ACTIVITY", payload: data });
                 setThread({
@@ -159,7 +164,7 @@ const ActivityContextProvider = ({
         const id = crypto.randomUUID();
         setThread({ payload: { action: "REMOVE_ACTIVITY", id }, type: "add" });
         activityService
-            .deleteActivity(payload)
+            .deleteActivity(payload, token?.token)
             .then(() => {
                 activitiesDisp({ type: "REMOVE_ACTIVITY", payload });
                 setThread({
@@ -175,7 +180,6 @@ const ActivityContextProvider = ({
                 });
             });
     };
-
     return (
         <activityContext.Provider
             value={{

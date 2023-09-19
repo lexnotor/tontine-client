@@ -1,10 +1,10 @@
 // ------------ REQUEST BASE URL ----------
-export const baseUrl = `${import.meta.env.BACKEND}/api/v1`;
+export const baseUrl = `${import.meta.env.VITE_BACKEND_URL}`;
 
 // ------------ API URL HELPER ------------
 export const authUrl = {
-    login: `${baseUrl}/login`,
-    signup: `${baseUrl}/register`,
+    login: `${baseUrl}/api/v1/login`,
+    signup: `${baseUrl}/api/v1/registers`,
     checkLogin: `${baseUrl}/`,
 };
 

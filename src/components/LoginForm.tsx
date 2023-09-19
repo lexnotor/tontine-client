@@ -1,10 +1,11 @@
+import { useAuth } from "@/hooks";
 import { FormEventHandler, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Checkbox from "./Checkbox";
+import CheckingAuth from "./CheckingAuth";
 
 const LoginForm = () => {
     // Account Verification
-    const navigate = useNavigate();
+    const { authStatus, login } = useAuth();
     // Form data
     const [longSession, toggleLongSession] = useState(true);
 
@@ -19,12 +20,15 @@ const LoginForm = () => {
         ];
 
         const payload = {
-            username: email,
-            secret,
+            email: email,
+            password: secret,
         };
-        navigate("/");
+        login(payload);
+
         return payload;
     };
+
+    if (authStatus == "LOOKING") return <CheckingAuth />;
 
     return (
         <form className="flex flex-col gap-6" onSubmit={submit}>

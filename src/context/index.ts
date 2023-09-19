@@ -3,9 +3,9 @@ export {
     useAppContext,
 } from "./GlobalContext";
 
-export {
-    default as ActivityContextProvider,
-    useActivityContext,
-} from "./ActivityContext";
+export { useActivityContext } from "./ActivityContext";
+export { useAuthContext } from "./AuthContext";
+export { useCotisationContext } from "./CotisationContext";
+export { useMemberContext } from "./MemberContext";
 
 export { default as RequestContextProvider } from "./RequestContext";

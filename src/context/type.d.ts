@@ -2,7 +2,16 @@ import { AddMemberPayload, SaveCotisatioPayload } from "@/services/type";
 
 export interface RequestContextType {}
 
-export interface ActivityContextType {
+export interface AuthContextType<AllType = any> {
+    auth?: AuthType;
+    authStatus?: "LOOKING" | "CONNECTED" | "DISCONNECTED";
+    login?: (payload: LoginPayload) => void;
+    signup?: (payload: SignupPayload) => void;
+    logout?: () => void;
+    thread?: ThreadType<AllType>[];
+}
+
+export interface ActivityContextType<AllType = any> {
     activities?: ActivityType[];
     getAllActivities?: () => void;
     createActivity?: (payload: CreateActivityPayload) => void;
@@ -14,7 +23,7 @@ export interface ActivityContextType {
     thread?: ThreadType<AllType>[];
 }
 
-export interface MemberContextType {
+export interface MemberContextType<AllType = any> {
     members?: MemberType[];
     getAllMembers?: () => void;
     createMember?: (payload: AddMemberPayload) => void;
@@ -23,7 +32,7 @@ export interface MemberContextType {
     thread?: ThreadType<AllType>[];
 }
 
-export interface CotisationContextType {
+export interface CotisationContextType<AllType = any> {
     cotisations?: CotisationType[];
     getAllCotisations?: () => void;
     createCotisation?: (payload: SaveCotisatioPayload) => void;
@@ -53,6 +62,15 @@ export interface GlobalContextType {
     setSavingFees?: React.Dispatch<React.SetStateAction<ModalAction_A>>;
 }
 
+export interface AuthType {
+    token?: {
+        token: string;
+        type: string;
+        exprire_at: string;
+    };
+    email?: string;
+    password?: string;
+}
 export interface ActivityType {
     id?: string;
     designation: string;

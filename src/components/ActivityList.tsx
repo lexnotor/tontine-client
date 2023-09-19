@@ -1,9 +1,9 @@
-import { activityList } from "@/data";
+import { ActivityType } from "@/context/type";
 import { Popover } from "antd";
 import { CgDetailsMore } from "react-icons/cg";
 import { Link } from "react-router-dom";
 
-const ActivityList = () => {
+const ActivityList = ({ data }: { data: ActivityType[] }) => {
     return (
         <div className="page">
             <h1 className="text-xl flex justify-between mb-4">
@@ -29,8 +29,9 @@ const ActivityList = () => {
                 </span>
             </h1>
             <ul className="flex flex-col gap-1">
-                {activityList.map((item) => (
+                {data.map((item) => (
                     <Link
+                        key={item.id}
                         to={`?do=one&id=${item.id}`}
                         className="py-3 px-4 bg-stone-600 text-white rounded-lg flex gap-4 items-center"
                     >

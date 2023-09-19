@@ -2,10 +2,13 @@ import axios from "axios";
 import { CreateActivityPayload } from "./type";
 import { activityUrl } from "./constante";
 
-const createActivity = async (payload: CreateActivityPayload) => {
+const createActivity = async (
+    payload: CreateActivityPayload,
+    token: string,
+) => {
     try {
         const res = await axios.post(activityUrl.createActivity, payload, {
-            headers: { Authorization: "" },
+            headers: { Authorization: `Bearer ${token}` },
         });
         return res.data;
     } catch (error) {
@@ -13,12 +16,12 @@ const createActivity = async (payload: CreateActivityPayload) => {
     }
 };
 
-const getAllActivities = async () => {
+const getAllActivities = async (token: string) => {
     try {
         const res = await axios.get(activityUrl.getAll, {
-            headers: { Authorization: "" },
+            headers: { Authorization: `Bearer ${token}` },
         });
-        return res.data;
+        return res.data.data;
     } catch (error) {
         throw new Error("UNABLE_TO_FETCH_ACTIVITIES");
     }
@@ -27,13 +30,14 @@ const getAllActivities = async () => {
 const updateActivity = async (
     activityId: string,
     payload: Partial<CreateActivityPayload>,
+    token: string,
 ) => {
     try {
         const res = await axios.put(
             activityUrl.updateActivity(activityId),
             payload,
             {
-                headers: { Authorization: "" },
+                headers: { Authorization: `Bearer ${token}` },
             },
         );
         return res.data;
@@ -42,10 +46,10 @@ const updateActivity = async (
     }
 };
 
-const deleteActivity = async (activityId: string) => {
+const deleteActivity = async (activityId: string, token: string) => {
     try {
         const res = await axios.delete(activityUrl.updateActivity(activityId), {
-            headers: { Authorization: "" },
+            headers: { Authorization: `Bearer ${token}` },
         });
         return res.data;
     } catch (error) {

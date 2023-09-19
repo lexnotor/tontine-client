@@ -1,7 +1,8 @@
 import React from "react";
 import ActivityContextProvider from "./ActivityContext";
-import MemberContextProvider from "./MemberContext";
+import AuthContextProvider from "./AuthContext";
 import CotisationContextProvider from "./CotisationContext";
+import MemberContextProvider from "./MemberContext";
 
 // ------------- CONTEXT PROVIDER -------------
 const RequestContextProvider = ({
@@ -10,13 +11,15 @@ const RequestContextProvider = ({
     children: React.ReactNode;
 }) => {
     return (
-        <MemberContextProvider>
+        <AuthContextProvider>
             <ActivityContextProvider>
-                <CotisationContextProvider>
-                    {children}
-                </CotisationContextProvider>
+                <MemberContextProvider>
+                    <CotisationContextProvider>
+                        {children}
+                    </CotisationContextProvider>
+                </MemberContextProvider>
             </ActivityContextProvider>
-        </MemberContextProvider>
+        </AuthContextProvider>
     );
 };
 
