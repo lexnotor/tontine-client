@@ -1,4 +1,4 @@
-import { ActivityDetails, ActivityList } from "@/components";
+import { ActivityDetails, ActivityList, transition } from "@/components";
 import CheckingAuth from "@/components/CheckingAuth";
 import { useActivity, useAuth } from "@/hooks";
 import { useSearchParams } from "react-router-dom";
@@ -19,4 +19,4 @@ const Activity = () => {
     }
 };
 
-export default Activity;
+export default transition(Activity);

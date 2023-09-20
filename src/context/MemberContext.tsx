@@ -95,7 +95,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
 
         memberService
-            .getAllMember(token.token)
+            .getAllMember(token?.token)
             .then((data) => {
                 membersDisp({ type: "SET_MEMBERS", payload: data });
                 setThread({
@@ -116,7 +116,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
         const id = crypto.randomUUID();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
         memberService
-            .addMember(payload, token.token)
+            .addMember(payload, token?.token)
             .then(() => {
                 // membersDisp({ type: "ADD_MEMBER", payload: data });
                 getAllMembers();
@@ -141,7 +141,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
         const id = crypto.randomUUID();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
         memberService
-            .updateOne(memberId, payload, token.token)
+            .updateOne(memberId, payload, token?.token)
             .then((data) => {
                 membersDisp({ type: "REPLACE_MEMBER", payload: data });
                 setThread({
@@ -162,7 +162,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
         const id = crypto.randomUUID();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
         memberService
-            .deleteMember(payload, token.token)
+            .deleteMember(payload, token?.token)
             .then(() => {
                 // membersDisp({ type: "REMOVE_MEMBER", payload });
                 getAllMembers();

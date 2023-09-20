@@ -1,3 +1,4 @@
+import { transition } from "@/components";
 import LoginForm from "@/components/LoginForm";
 
 const Login = () => {
@@ -15,4 +16,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default transition(Login);

@@ -100,7 +100,7 @@ const CotisationContextProvider = ({
         const id = crypto.randomUUID();
         setThread({ payload: { action: "SET_COTISATIONS", id }, type: "add" });
         cotisationService
-            .getAllCotisation(token.token)
+            .getAllCotisation(token?.token)
             .then((data) => {
                 cotisationsDisp({ type: "SET_COTISATIONS", payload: data });
                 setThread({
@@ -121,7 +121,7 @@ const CotisationContextProvider = ({
         const id = crypto.randomUUID();
         setThread({ payload: { action: "ADD_COTISATION", id }, type: "add" });
         cotisationService
-            .createCotisation(payload, token.token)
+            .createCotisation(payload, token?.token)
             .then(() => {
                 // cotisationsDisp({ type: "ADD_COTISATION", payload: data });
                 getAllCotisations();
@@ -149,7 +149,7 @@ const CotisationContextProvider = ({
             type: "add",
         });
         cotisationService
-            .updateCotisation(cotisationId, payload, token.token)
+            .updateCotisation(cotisationId, payload, token?.token)
             .then((data) => {
                 cotisationsDisp({ type: "REPLACE_COTISATION", payload: data });
                 setThread({
@@ -173,7 +173,7 @@ const CotisationContextProvider = ({
             type: "add",
         });
         cotisationService
-            .deleteCotisation(payload, token.token)
+            .deleteCotisation(payload, token?.token)
             .then(() => {
                 // cotisationsDisp({ type: "REMOVE_COTISATION", payload });
                 getAllCotisations();

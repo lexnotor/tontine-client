@@ -26,6 +26,7 @@ const App = () => {
 
                             <Route path="*" element={<Navigate to="/" />} />
                         </Routes>
+
                         <ModalManager />
                     </GlobalContextProvider>
                 </RequestContextProvider>

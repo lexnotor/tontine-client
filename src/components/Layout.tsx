@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
+import { AnimatePresence } from "framer-motion";
 
 const Layout = () => {
     return (
@@ -8,7 +9,9 @@ const Layout = () => {
                 <NavBar />
             </header>
             <main>
-                <Outlet />
+                <AnimatePresence mode="wait">
+                    <Outlet />
+                </AnimatePresence>
             </main>
         </div>
     );

@@ -2,11 +2,12 @@ import { useAppContext } from "@/context";
 import { useActivity, useCotisation, useMembers } from "@/hooks";
 import { Popover, Tag } from "antd";
 import { useMemo, useRef } from "react";
-import { CgDetailsMore } from "react-icons/cg";
 import { CiTimer } from "react-icons/ci";
 import { GiBackwardTime } from "react-icons/gi";
+import { LuSettings2 } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import MemberCard from "./MemberCard";
+import { motion } from "framer-motion";
 
 const ActivityDetails = ({ activityId }: { activityId?: string }) => {
     const { setSavingFees, setAddingMember, setDeletingMember } =
@@ -27,7 +28,12 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
     }, [activities, activityId]);
 
     return (
-        <div className="page">
+        <motion.div
+            initial={{ opacity: 0.5 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="page"
+        >
             <h1 className="flex justify-between">
                 <span className="">
                     <Link
@@ -37,9 +43,7 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                         Return
                     </Link>
                 </span>
-                <span className=" text-xl uppercase">
-                    {currentActivity?.designation}
-                </span>
+                <span className=" text-xl">{currentActivity?.designation}</span>
                 <span className="text-2xl" ref={outRef}>
                     <Popover
                         trigger={["click"]}
@@ -83,7 +87,9 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                             </ul>
                         )}
                     >
-                        <CgDetailsMore />
+                        <span>
+                            <LuSettings2 />
+                        </span>
                     </Popover>
                 </span>
             </h1>
@@ -131,7 +137,7 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                     ))}
                 </div>
             </section>
-        </div>
+        </motion.div>
     );
 };
 

@@ -1,7 +1,8 @@
 import { useAppContext } from "@/context";
 import { ActivityType } from "@/context/type";
 import { Popover } from "antd";
-import { CgDetailsMore } from "react-icons/cg";
+import { motion } from "framer-motion";
+import { LuSettings2 } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
 const ActivityList = ({ data }: { data: ActivityType[] }) => {
@@ -32,31 +33,39 @@ const ActivityList = ({ data }: { data: ActivityType[] }) => {
                             </ul>
                         )}
                     >
-                        <CgDetailsMore />
+                        <span>
+                            <LuSettings2 />
+                        </span>
                     </Popover>
                 </span>
             </h1>
             <ul className="flex flex-col gap-1">
                 {data.map((item) => (
-                    <Link
+                    <motion.li
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
                         key={item.id}
-                        to={`?do=one&id=${item.id}`}
-                        className="py-3 px-4 shadow-lg text-stone-600 rounded-lg flex gap-4 items-center"
                     >
-                        <span className="rounded-full w-12 h-12 bg-stone-600 flex items-center justify-center text-2xl uppercase text-neutral-200">
-                            {item.members}
-                        </span>
-                        <p className="flex flex-col">
-                            <span>{item.designation}</span>
-                            <span className="italic text-[85%] text-neutral-600">
-                                {item.description?.slice(0, 40)} ...
+                        <Link
+                            to={`?do=one&id=${item.id}`}
+                            className="py-3 px-4 shadow-lg text-stone-600 rounded-lg flex gap-4 items-center"
+                        >
+                            <span className="rounded-full w-12 h-12 bg-stone-600 flex items-center justify-center text-2xl uppercase text-neutral-200">
+                                {item.members}
                             </span>
-                        </p>
+                            <p className="flex flex-col">
+                                <span>{item.designation}</span>
+                                <span className="italic text-[85%] text-neutral-600 whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[10rem]">
+                                    {item.description?.slice(0, 40)} ...
+                                </span>
+                            </p>
 
-                        <span className="ml-auto py-1 px-2 text-[85%] border border-blue-800 rounded-lg text-blue-800">
-                            Voir plus
-                        </span>
-                    </Link>
+                            <span className="whitespace-nowrap ml-auto py-1 px-2 text-[85%] border border-blue-800 rounded-lg text-blue-800">
+                                Voir plus
+                            </span>
+                        </Link>
+                    </motion.li>
                 ))}
             </ul>
         </div>
