@@ -22,11 +22,11 @@ export interface CreateActivityPayload {
     designation: string;
     start: string; // "15/08/2023"
     end: string;
-    cycle: string;
+    cycle: "parJour" | "parSemaine" | "parMois" | "parAnnee";
     amountToGive: number;
     status: string;
     members: 15;
-    currency: string;
+    currency: "USD" | "FC";
 }
 
 export interface SaveCotisatioPayload {

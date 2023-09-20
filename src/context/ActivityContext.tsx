@@ -119,8 +119,9 @@ const ActivityContextProvider = ({
         setThread({ payload: { action: "ADD_ACTIVITY", id }, type: "add" });
         activityService
             .createActivity(payload, token?.token)
-            .then((data) => {
-                activitiesDisp({ type: "ADD_ACTIVITY", payload: data });
+            .then(() => {
+                // activitiesDisp({ type: "ADD_ACTIVITY", payload: data });
+                getAllActivities();
                 setThread({
                     id,
                     type: "success",

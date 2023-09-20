@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
     return (
-        <nav className="w-full grid grid-cols-3 text-center gap-4 border-none border-b border-black">
+        <nav className="w-full grid grid-cols-3 shadow-md text-center gap-4 border-none border-b border-black">
             <NavLink
                 to="/"
                 className={({ isActive }) =>

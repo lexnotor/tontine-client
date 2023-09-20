@@ -11,16 +11,16 @@
 
     body {
         font-size: 14px;
-        @apply w-screen h-screen bg-[#2e2e2e] text-[#3a3a3a] p-0 m-0;
+        @apply w-screen bg-[#2e2e2e] text-[#3a3a3a] p-0 m-0;
     }
 
 
     #root {
-        @apply m-0 py-[10px];
+        @apply m-0 p-0;
     }
 
     .layout {
-        @apply max-w-md h-[calc(100vh-20px)] mx-auto rounded-t-2xl bg-[#ffffff] overflow-y-auto overflow-x-hidden;
+        @apply max-w-md h-screen mx-auto rounded-t-2xl bg-[#ffffff] overflow-y-auto overflow-x-hidden;
     }
 
     .page {

@@ -21,7 +21,7 @@ const getAllCotisation = async (token: string) => {
         const res = await axios.get(cotisationUrl.getAll, {
             headers: { Authorization: `Bearer ${token}` },
         });
-        return res.data;
+        return res.data.data;
     } catch (error) {
         throw new Error("UNABLE_TO_FETCH_COTISATION");
     }

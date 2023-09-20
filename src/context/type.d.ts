@@ -60,6 +60,9 @@ export interface GlobalContextType {
 
     savingFees?: ModalAction_A;
     setSavingFees?: React.Dispatch<React.SetStateAction<ModalAction_A>>;
+
+    creatingActivity?: ModalAction_A;
+    setCreatingActivity?: React.Dispatch<React.SetStateAction<ModalAction_A>>;
 }
 
 export interface AuthType {
@@ -77,11 +80,11 @@ export interface ActivityType {
     description: string;
     start: string;
     end: string;
-    cycle: string;
+    cycle: "parJour" | "parSemaine" | "parMois" | "parAnnee";
     amountToGive: number;
     status: string;
     members: 15;
-    currency: string;
+    currency: "USD" | "FC";
 }
 
 export interface MemberType {
@@ -96,8 +99,8 @@ export interface MemberType {
 export interface CotisationType {
     id: string;
     amount: number;
-    activityId: string;
-    memberId: string;
+    activity_id: string;
+    member_id: string;
 }
 
 export interface ThreadType<T = string> {

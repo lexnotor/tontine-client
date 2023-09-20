@@ -11,6 +11,8 @@ const GlobalContextProvider = ({
     const [savingFees, setSavingFees] = useState<ModalAction_A>(null);
     const [addingMember, setAddingMember] = useState<ModalAction_A>(null);
     const [deletingMember, setDeletingMember] = useState<ModalAction_A>(null);
+    const [creatingActivity, setCreatingActivity] =
+        useState<ModalAction_A>(null);
 
     return (
         <StateContext.Provider
@@ -21,6 +23,8 @@ const GlobalContextProvider = ({
                 setAddingMember,
                 deletingMember,
                 setDeletingMember,
+                creatingActivity,
+                setCreatingActivity,
             }}
         >
             {children}

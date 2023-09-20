@@ -151,7 +151,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         <authContext.Provider
             value={{ auth, login, signup, logout, thread, authStatus }}
         >
-            {children}children
+            {children}
         </authContext.Provider>
     );
 };
