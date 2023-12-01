@@ -9,8 +9,10 @@ const useAuth = () => {
     const { pathname } = useLocation();
 
     useEffect(() => {
-        if (authStatus == "DISCONNECTED" && pathname != "/login")
+        if (authStatus == "DISCONNECTED" && pathname != "/login") {
+            alert(authStatus);
             navigateTo("/login");
+        }
         if (pathname == "/login" && authStatus == "CONNECTED") navigateTo("/");
     }, [auth, authStatus, navigateTo, pathname]);
 

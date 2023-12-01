@@ -6,4 +6,4 @@ export { default as ListeMember } from "./ListeMember";
 export { default as LoginForm } from "./LoginForm";
 export { default as MemberCard } from "./MemberCard";
 export { default as NavBar } from "./NavBar";
-export { default as transition } from "./PageTransition";
+export { default as PageTransition } from "./PageTransition";

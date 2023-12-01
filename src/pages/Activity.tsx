@@ -1,4 +1,4 @@
-import { ActivityDetails, ActivityList, transition } from "@/components";
+import { ActivityDetails, ActivityList, PageTransition } from "@/components";
 import CheckingAuth from "@/components/CheckingAuth";
 import { useActivity, useAuth } from "@/hooks";
 import { useSearchParams } from "react-router-dom";
@@ -12,11 +12,19 @@ const Activity = () => {
 
     switch (searchParam.get("do")) {
         case "one":
-            return <ActivityDetails activityId={searchParam.get("id")} />;
+            return (
+                <PageTransition>
+                    <ActivityDetails activityId={searchParam.get("id")} />
+                </PageTransition>
+            );
 
         default:
-            return <ActivityList data={activities} />;
+            return (
+                <PageTransition>
+                    <ActivityList data={activities} />
+                </PageTransition>
+            );
     }
 };
 
-export default transition(Activity);
+export default Activity;

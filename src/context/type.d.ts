@@ -81,7 +81,7 @@ export interface ActivityType {
     start: string;
     end: string;
     cycle: "parJour" | "parSemaine" | "parMois" | "parAnnee";
-    amountToGive: number;
+    amount_to_give: number;
     status: string;
     members: 15;
     currency: "USD" | "FC";

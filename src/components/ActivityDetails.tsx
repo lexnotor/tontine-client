@@ -99,11 +99,25 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                         <GiBackwardTime />
                     </span>
                     <Tag className="text-[85%]" color="blue">
-                        {new Date(currentActivity?.start).toLocaleDateString()}
+                        <div className="flex gap-2">
+                            <span>Début</span>
+                            <span>
+                                {new Date(
+                                    currentActivity?.start,
+                                ).toLocaleDateString()}
+                            </span>
+                        </div>
                     </Tag>
                     <span className="text-base">-</span>
                     <Tag className="text-[85%]" color="blue">
-                        {new Date(currentActivity?.end).toLocaleDateString()}
+                        <div className="flex gap-2">
+                            <span>Fin</span>
+                            <span>
+                                {new Date(
+                                    currentActivity?.end,
+                                ).toLocaleDateString()}
+                            </span>
+                        </div>
                     </Tag>
                 </p>
 
@@ -112,8 +126,21 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                         <CiTimer />
                     </span>
                     <Tag className="text-[85%]" color="blue">
-                        {currentActivity?.cycle}
+                        <div className="flex gap-2 items-center">
+                            <span className="text-[85%]">
+                                {currentActivity?.amount_to_give}{" "}
+                                {currentActivity?.currency}
+                            </span>
+                            <span>{currentActivity?.cycle}</span>
+                        </div>
                     </Tag>
+                    {new Date(currentActivity?.end) < new Date() ? (
+                        <Tag className="text-[85%]" color="red">
+                            Déjà terminer
+                        </Tag>
+                    ) : (
+                        <Tag color="green">Activité en cours</Tag>
+                    )}
                 </p>
             </div>
 
