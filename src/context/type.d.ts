@@ -50,6 +50,7 @@ export type CustomeAction<T = any, D = string> = {
 };
 
 export type ModalAction_A = { activity: string; now: boolean };
+export type ModalAction_B = { member: string; now: boolean };
 
 export interface GlobalContextType {
     addingMember?: ModalAction_A;
@@ -63,6 +64,9 @@ export interface GlobalContextType {
 
     creatingActivity?: ModalAction_A;
     setCreatingActivity?: React.Dispatch<React.SetStateAction<ModalAction_A>>;
+
+    showFees?: ModalAction_B;
+    setShowFees?: React.Dispatch<React.SetStateAction<ModalAction_B>>;
 }
 
 export interface AuthType {

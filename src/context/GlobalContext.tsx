@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import { GlobalContextType, ModalAction_A } from "./type";
+import { GlobalContextType, ModalAction_A, ModalAction_B } from "./type";
 
 const StateContext = createContext<GlobalContextType>({});
 
@@ -13,6 +13,7 @@ const GlobalContextProvider = ({
     const [deletingMember, setDeletingMember] = useState<ModalAction_A>(null);
     const [creatingActivity, setCreatingActivity] =
         useState<ModalAction_A>(null);
+    const [showFees, setShowFees] = useState<ModalAction_B>(null);
 
     return (
         <StateContext.Provider
@@ -25,6 +26,8 @@ const GlobalContextProvider = ({
                 setDeletingMember,
                 creatingActivity,
                 setCreatingActivity,
+                showFees,
+                setShowFees,
             }}
         >
             {children}

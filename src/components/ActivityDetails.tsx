@@ -2,12 +2,13 @@ import { useAppContext } from "@/context";
 import { useActivity, useCotisation, useMembers } from "@/hooks";
 import { Popover, Tag } from "antd";
 import { useMemo, useRef } from "react";
-import { CiTimer } from "react-icons/ci";
+import { CiTimer, CiUser } from "react-icons/ci";
 import { GiBackwardTime } from "react-icons/gi";
 import { LuSettings2 } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import MemberCard from "./MemberCard";
 import { motion } from "framer-motion";
+import getCycleNumber from "@/functions/getCycleNumber";
 
 const ActivityDetails = ({ activityId }: { activityId?: string }) => {
     const { setSavingFees, setAddingMember, setDeletingMember } =
@@ -26,6 +27,10 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
     const currentActivity = useMemo(() => {
         return activities.find((item) => item.id == activityId);
     }, [activities, activityId]);
+
+    const beneficiar = memberList.find(
+        (item) => item?.status == "isBeneficiary",
+    );
 
     return (
         <motion.div
@@ -94,7 +99,7 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                 </span>
             </h1>
             <div className="p-4 bg-neutral-200/50 rounded-lg my-4 shadow-xl">
-                <p className="flex gap-4 items-center my-2">
+                <article className="flex gap-4 items-center my-2">
                     <span className="text-2xl text-blue-700">
                         <GiBackwardTime />
                     </span>
@@ -119,10 +124,10 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                             </span>
                         </div>
                     </Tag>
-                </p>
+                </article>
 
-                <p className="my-2 text-base flex gap-4 items-center">
-                    <span className="text-2xl text-blue-700">
+                <article className="my-2 text-base flex gap-4 items-center">
+                    <span className="text-xl text-blue-700">
                         <CiTimer />
                     </span>
                     <Tag className="text-[85%]" color="blue">
@@ -141,7 +146,32 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                     ) : (
                         <Tag color="green">Activité en cours</Tag>
                     )}
-                </p>
+                </article>
+
+                <article className="my-2 text-base flex gap-4 items-center">
+                    <span className="text-2xl text-green-700">
+                        <CiUser />
+                    </span>
+                    <Tag className="text-[85%]" color="green">
+                        <div className="flex gap-2 items-center">
+                            <span className="text-[85%]">
+                                {beneficiar
+                                    ? beneficiar?.name
+                                    : "Aucun beneficiére"}
+                            </span>
+                        </div>
+                    </Tag>
+                    {new Date(currentActivity?.end) < new Date() ? null : (
+                        <Tag color="green">
+                            {getCycleNumber(
+                                currentActivity?.start,
+                                currentActivity?.cycle,
+                            )}
+                            <sup>e</sup>
+                            <span> Cycle</span>
+                        </Tag>
+                    )}
+                </article>
             </div>
 
             <section className="p-4 bg-neutral-200/50 rounded-lg my-4 shadow-xl">
@@ -160,6 +190,7 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                                 (item) => item.member_id == member.id,
                             )}
                             activity={currentActivity}
+                            allMember={memberList}
                         />
                     ))}
                 </div>

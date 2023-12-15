@@ -62,7 +62,7 @@ const updateOne = async (
     const { name, phone, postname, status } = payload;
 
     try {
-        const res = await axios.put(
+        const res = await axios.patch(
             memberUrl.updateOne(memberId),
             {
                 name,

@@ -13,7 +13,7 @@ export const memberUrl = {
     getAll: `${baseUrl}/member`,
     getAllByActivity: (activityId: string) => `${baseUrl}/member/${activityId}`,
     deleteOne: (memberId: string) => `${baseUrl}/member/${memberId}`,
-    updateOne: (memberId: string) => `${baseUrl}/member/${memberId}`,
+    updateOne: (memberId: string) => `${baseUrl}/api/v1/member/${memberId}`,
 };
 
 export const activityUrl = {
