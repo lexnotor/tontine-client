@@ -49,7 +49,11 @@ const ActivityList = ({ data }: { data: ActivityType[] }) => {
                     >
                         <Link
                             to={`?do=one&id=${item.id}`}
-                            className="py-3 px-4 shadow-lg text-stone-600 rounded-lg flex gap-4 items-center"
+                            className={`${
+                                new Date(item?.end) < new Date()
+                                    ? "border-l-8 border-red-400 bg-red-50"
+                                    : ""
+                            } py-3 px-4 shadow-lg text-stone-600 rounded-lg flex gap-4 items-center`}
                         >
                             <span className="rounded-full w-12 h-12 bg-stone-600 flex items-center justify-center text-2xl uppercase text-neutral-200">
                                 {item.members}

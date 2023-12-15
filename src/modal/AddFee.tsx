@@ -1,5 +1,5 @@
 import { useAppContext } from "@/context";
-import { useCotisation, useMembers } from "@/hooks";
+import { useActivity, useCotisation, useMembers } from "@/hooks";
 import { Modal } from "antd";
 import React, { useMemo, useRef } from "react";
 
@@ -7,9 +7,14 @@ const AddFee = () => {
     const { setSavingFees, savingFees } = useAppContext();
     const { members } = useMembers();
     const { createCotisation } = useCotisation();
+    const { activities } = useActivity();
 
     const memberRef = useRef<HTMLSelectElement>();
     const amountRef = useRef<HTMLInputElement>();
+    const currentActivity = useMemo(
+        () => activities?.find((item) => item?.id == savingFees?.activity),
+        [activities, savingFees?.activity],
+    );
 
     const submit: React.FormEventHandler = (e) => {
         e.preventDefault();
@@ -59,6 +64,7 @@ const AddFee = () => {
                         ))}
                     </select>
                 </div>
+
                 <div className="flex flex-col gap-1">
                     <label htmlFor="first">Montant</label>
                     <div className="flex gap-2">
@@ -67,12 +73,18 @@ const AddFee = () => {
                             name="first"
                             id="first"
                             ref={amountRef}
+                            defaultValue={currentActivity?.amount_to_give}
                             className="w-[calc(100%-4rem)] border px-4 py-1 rounded-lg"
                         />
                         <select
                             name=""
                             id=""
                             className="w-[4rem] px-2 py-2 border bg-transparent rounded-lg"
+                            defaultValue={
+                                currentActivity?.currency == "USD"
+                                    ? "usd"
+                                    : "fc"
+                            }
                         >
                             <option value="usd">USD</option>
                             <option value="fc">FC</option>

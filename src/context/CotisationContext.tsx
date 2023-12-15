@@ -9,6 +9,7 @@ import {
     ThreadActionType,
     ThreadType,
 } from "./type";
+import { v4 as uuid_v4 } from "uuid";
 
 // ----------------- CONTEXT -----------------
 const cotisationContext = createContext<CotisationContextType<AllType>>({});
@@ -97,7 +98,7 @@ const CotisationContextProvider = ({
     );
 
     const getAllCotisations = () => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "SET_COTISATIONS", id }, type: "add" });
         cotisationService
             .getAllCotisation(token?.token)
@@ -118,7 +119,7 @@ const CotisationContextProvider = ({
     };
 
     const createCotisation = (payload: SaveCotisatioPayload) => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "ADD_COTISATION", id }, type: "add" });
         cotisationService
             .createCotisation(payload, token?.token)
@@ -143,7 +144,7 @@ const CotisationContextProvider = ({
         cotisationId: string,
         payload: Partial<SaveCotisatioPayload>,
     ) => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({
             payload: { action: "REPLACE_COTISATION", id },
             type: "add",
@@ -167,7 +168,7 @@ const CotisationContextProvider = ({
     };
 
     const deleteCotisation = (payload: string) => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({
             payload: { action: "REMOVE_COTISATION", id },
             type: "add",

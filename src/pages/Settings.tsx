@@ -1,19 +1,21 @@
-import { transition } from "@/components";
+import { PageTransition } from "@/components";
 import { useAuth } from "@/hooks";
 
 const Settings = () => {
     const { logout } = useAuth();
     return (
-        <div className="page">
-            <ul className="flex flex-col">
-                <li className="py-2" onClick={() => logout()}>
-                    Deconnexion
-                </li>
+        <PageTransition>
+            <div className="page">
+                <ul className="flex flex-col">
+                    <li className="py-2" onClick={() => logout()}>
+                        Deconnexion
+                    </li>
 
-                <hr />
-            </ul>
-        </div>
+                    <hr />
+                </ul>
+            </div>
+        </PageTransition>
     );
 };
 
-export default transition(Settings);
+export default Settings;

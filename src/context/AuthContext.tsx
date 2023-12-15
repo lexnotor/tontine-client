@@ -14,6 +14,7 @@ import {
 } from "./type";
 import { LoginPayload, SignupPayload } from "@/services/type";
 import { authService } from "@/services";
+import { v4 as uuid_v4 } from "uuid";
 
 const authContext = createContext<AuthContextType>({});
 type AllPayload = AuthType;
@@ -80,7 +81,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     );
 
     const login = (payload: LoginPayload) => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "SIGNIN", id }, type: "add" });
         authService
             .login(payload)
@@ -102,7 +103,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const signup = (payload: SignupPayload) => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "SIGNUP", id }, type: "add" });
         authService
             .login(payload)
@@ -124,7 +125,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const logout = () => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "LOGOUT", id }, type: "add" });
         authDispatch({ type: "LOGOUT" });
         setAuthStatus("DISCONNECTED");

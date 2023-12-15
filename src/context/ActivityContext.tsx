@@ -9,6 +9,7 @@ import {
     ThreadActionType,
 } from "./type";
 import { useAuthContext } from ".";
+import { v4 as uuid_v4 } from "uuid";
 
 // ------------- CONTEXT_CREATION -------------
 type AllPayload = ActivityType | ActivityType[] | string;
@@ -94,7 +95,7 @@ const ActivityContextProvider = ({
     );
 
     const getAllActivities = () => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "SET_ACTIVITIES", id }, type: "add" });
         activityService
             .getAllActivities(token?.token)
@@ -115,7 +116,7 @@ const ActivityContextProvider = ({
     };
 
     const createActivity = (payload: CreateActivityPayload) => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "ADD_ACTIVITY", id }, type: "add" });
         activityService
             .createActivity(payload, token?.token)
@@ -140,7 +141,7 @@ const ActivityContextProvider = ({
         activityId: string,
         payload: Partial<CreateActivityPayload>,
     ) => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "REPLACE_ACTIVITY", id }, type: "add" });
         activityService
             .updateActivity(activityId, payload, token?.token)
@@ -161,7 +162,7 @@ const ActivityContextProvider = ({
     };
 
     const deleteActivity = (payload: string) => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "REMOVE_ACTIVITY", id }, type: "add" });
         activityService
             .deleteActivity(payload, token?.token)

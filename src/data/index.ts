@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { v4 as uuid_v4 } from "uuid";
 
 const MIN_MEMBER = 10,
     MAX_MEMEBER = 100;
@@ -9,7 +10,7 @@ const activityList = [
     ...(function* (i) {
         for (let j = 0; j < i; j++)
             yield {
-                id: crypto.randomUUID(),
+                id: uuid_v4(),
                 designation: faker.word.words(1),
                 description: faker.word.words({ count: { min: 30, max: 50 } }),
                 start: new Date().toISOString(),

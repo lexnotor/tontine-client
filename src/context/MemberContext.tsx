@@ -9,6 +9,7 @@ import {
     ThreadType,
 } from "./type";
 import { useAuth } from "@/hooks";
+import { v4 as uuid_v4 } from "uuid";
 
 // ----------------- CONTEXT -----------------
 const memberContext = createContext<MemberContextType<AllType>>({});
@@ -91,7 +92,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
     );
 
     const getAllMembers = () => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
 
         memberService
@@ -113,7 +114,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const createMember = (payload: AddMemberPayload) => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
         memberService
             .addMember(payload, token?.token)
@@ -138,7 +139,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
         memberId: string,
         payload: Partial<AddMemberPayload>,
     ) => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
         memberService
             .updateOne(memberId, payload, token?.token)
@@ -159,7 +160,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const deleteMember = (payload: string) => {
-        const id = crypto.randomUUID();
+        const id = uuid_v4();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
         memberService
             .deleteMember(payload, token?.token)
