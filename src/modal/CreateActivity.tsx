@@ -1,4 +1,5 @@
 import { useAppContext } from "@/context";
+import { useToastContext } from "@/context/ToastContext";
 import { useActivity } from "@/hooks";
 import { Modal } from "antd";
 import React, { useRef, useState } from "react";
@@ -6,6 +7,7 @@ import React, { useRef, useState } from "react";
 const CreateActivity = () => {
     const { setCreatingActivity } = useAppContext();
     const { createActivity } = useActivity();
+    const { addToast } = useToastContext();
 
     const [, reload] = useState<any>(null);
 
@@ -48,7 +50,10 @@ const CreateActivity = () => {
             currency: currencyRef.current.value,
         };
         if (Object.values(payload).some((val) => !val))
-            return alert("Tous les champs sont obligatoire");
+            return addToast({
+                content: "Tous les champs sont obligatoire",
+                type: "ERROR",
+            });
 
         createActivity(payload);
         setCreatingActivity({ activity: null, now: false });

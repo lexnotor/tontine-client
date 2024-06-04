@@ -10,6 +10,7 @@ import {
     ThreadType,
 } from "./type";
 import { v4 as uuid_v4 } from "uuid";
+import { useToastContext } from "./ToastContext";
 
 // ----------------- CONTEXT -----------------
 const cotisationContext = createContext<CotisationContextType<AllType>>({});
@@ -29,6 +30,8 @@ const CotisationContextProvider = ({
     const {
         auth: { token },
     } = useAuth();
+    const { addToast } = useToastContext();
+
     const [cotisations, cotisationsDisp] = useReducer(
         (
             state: CotisationType[],
@@ -110,7 +113,7 @@ const CotisationContextProvider = ({
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",
@@ -132,7 +135,7 @@ const CotisationContextProvider = ({
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",
@@ -159,7 +162,7 @@ const CotisationContextProvider = ({
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",
@@ -184,7 +187,7 @@ const CotisationContextProvider = ({
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",

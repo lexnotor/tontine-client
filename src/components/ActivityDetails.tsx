@@ -9,10 +9,12 @@ import { Link } from "react-router-dom";
 import MemberCard from "./MemberCard";
 import { motion } from "framer-motion";
 import getCycleNumber from "@/functions/getCycleNumber";
+import { useToastContext } from "@/context/ToastContext";
 
 const ActivityDetails = ({ activityId }: { activityId?: string }) => {
     const { setSavingFees, setAddingMember, setDeletingMember } =
         useAppContext();
+    const { addToast } = useToastContext();
 
     const outRef = useRef<HTMLSpanElement>(null);
 
@@ -30,6 +32,11 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
 
     const beneficiar = memberList.find(
         (item) => item?.status == "isBeneficiary",
+    );
+
+    const isActivityFinish = useMemo(
+        () => new Date(currentActivity?.end) < new Date(),
+        [currentActivity],
     );
 
     return (
@@ -57,34 +64,64 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                         content={() => (
                             <ul className="flex flex-col">
                                 <li
-                                    className="py-1 cursor-pointer"
+                                    className={`py-1  ${
+                                        isActivityFinish
+                                            ? "text-neutral-300 cursor-not-allowed"
+                                            : "cursor-pointer"
+                                    }`}
                                     onClick={() =>
-                                        setAddingMember({
-                                            activity: currentActivity?.id,
-                                            now: true,
-                                        })
+                                        !isActivityFinish
+                                            ? setAddingMember({
+                                                  activity: currentActivity?.id,
+                                                  now: true,
+                                              })
+                                            : addToast({
+                                                  content:
+                                                      "L'activité est términé",
+                                                  type: "ERROR",
+                                              })
                                     }
                                 >
                                     Ajouter un membre
                                 </li>
                                 <li
-                                    className="py-1 cursor-pointer"
+                                    className={`py-1  ${
+                                        isActivityFinish
+                                            ? "text-neutral-300 cursor-not-allowed"
+                                            : "cursor-pointer"
+                                    }`}
                                     onClick={() =>
-                                        setDeletingMember({
-                                            activity: currentActivity?.id,
-                                            now: true,
-                                        })
+                                        !isActivityFinish
+                                            ? setDeletingMember({
+                                                  activity: currentActivity?.id,
+                                                  now: true,
+                                              })
+                                            : addToast({
+                                                  content:
+                                                      "L'activité est términé",
+                                                  type: "ERROR",
+                                              })
                                     }
                                 >
                                     Supprimer un membre
                                 </li>
                                 <li
-                                    className="py-1 cursor-pointer"
+                                    className={`py-1  ${
+                                        isActivityFinish
+                                            ? "text-neutral-300 cursor-not-allowed"
+                                            : "cursor-pointer"
+                                    }`}
                                     onClick={() =>
-                                        setSavingFees({
-                                            activity: currentActivity?.id,
-                                            now: true,
-                                        })
+                                        !isActivityFinish
+                                            ? setSavingFees({
+                                                  activity: currentActivity?.id,
+                                                  now: true,
+                                              })
+                                            : addToast({
+                                                  content:
+                                                      "L'activité est términé",
+                                                  type: "ERROR",
+                                              })
                                     }
                                 >
                                     Enregistrer une contisation
@@ -139,7 +176,7 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                             <span>{currentActivity?.cycle}</span>
                         </div>
                     </Tag>
-                    {new Date(currentActivity?.end) < new Date() ? (
+                    {isActivityFinish ? (
                         <Tag className="text-[85%]" color="red">
                             Déjà terminer
                         </Tag>

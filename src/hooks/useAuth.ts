@@ -1,8 +1,11 @@
 import { useAuthContext } from "@/context";
+import { useToastContext } from "@/context/ToastContext";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const useAuth = () => {
+    const { addToast } = useToastContext();
+
     const { auth, authStatus, login, logout, signup, thread } =
         useAuthContext();
     const navigateTo = useNavigate();
@@ -10,11 +13,11 @@ const useAuth = () => {
 
     useEffect(() => {
         if (authStatus == "DISCONNECTED" && pathname != "/login") {
-            alert(authStatus);
+            addToast({ content: authStatus, type: "ERROR" });
             navigateTo("/login");
         }
         if (pathname == "/login" && authStatus == "CONNECTED") navigateTo("/");
-    }, [auth, authStatus, navigateTo, pathname]);
+    }, [auth, authStatus, navigateTo, pathname, addToast]);
 
     return { auth, authStatus, login, logout, signup, thread };
 };

@@ -10,6 +10,7 @@ import {
 } from "./type";
 import { useAuthContext } from ".";
 import { v4 as uuid_v4 } from "uuid";
+import { useToastContext } from "./ToastContext";
 
 // ------------- CONTEXT_CREATION -------------
 type AllPayload = ActivityType | ActivityType[] | string;
@@ -29,6 +30,7 @@ const ActivityContextProvider = ({
     const {
         auth: { token },
     } = useAuthContext();
+    const { addToast } = useToastContext();
     const [activities, activitiesDisp] = useReducer(
         (state: ActivityType[], action: CustomeAction<AllPayload, AllType>) => {
             switch (action.type) {
@@ -107,7 +109,7 @@ const ActivityContextProvider = ({
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",
@@ -129,7 +131,7 @@ const ActivityContextProvider = ({
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",
@@ -153,7 +155,7 @@ const ActivityContextProvider = ({
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",
@@ -174,7 +176,7 @@ const ActivityContextProvider = ({
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",
