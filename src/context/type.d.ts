@@ -44,6 +44,13 @@ export interface CotisationContextType<AllType = any> {
     thread?: ThreadType<AllType>[];
 }
 
+export interface ToastContextType<AllType = any> {
+    toasts?: ToastType[];
+    addToast?: (payload: Omit<ToastType, "id">) => void;
+    removeToast?: (payload: string) => void;
+    thread?: ThreadType<AllType>[];
+}
+
 export type CustomeAction<T = any, D = string> = {
     payload?: T;
     type: D;
@@ -127,3 +134,9 @@ export type ThreadActionType<T = string> =
           id: string;
           type: "success" | "error";
       };
+
+export type ToastType = {
+    id?: string;
+    content: string;
+    type: "ERROR" | "SUCCESS" | "LOADING";
+};

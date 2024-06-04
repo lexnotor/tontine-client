@@ -74,12 +74,16 @@ const AddFee = () => {
                             id="first"
                             ref={amountRef}
                             defaultValue={currentActivity?.amount_to_give}
-                            className="w-[calc(100%-4rem)] border px-4 py-1 rounded-lg"
+                            value={currentActivity?.amount_to_give}
+                            className="w-[calc(100%-4rem)] border px-4 py-1 rounded-lg cursor-not-allowed"
+                            disabled
                         />
                         <select
+                            disabled
                             name=""
+                            value={currentActivity?.currency}
                             id=""
-                            className="w-[4rem] px-2 py-2 border bg-transparent rounded-lg"
+                            className="w-[4rem] px-2 py-2 border bg-transparent rounded-lg cursor-not-allowed"
                             defaultValue={
                                 currentActivity?.currency == "USD"
                                     ? "usd"

@@ -15,12 +15,14 @@ import {
 import { LoginPayload, SignupPayload } from "@/services/type";
 import { authService } from "@/services";
 import { v4 as uuid_v4 } from "uuid";
+import { useToastContext } from "./ToastContext";
 
 const authContext = createContext<AuthContextType>({});
 type AllPayload = AuthType;
 type AllType = "SIGNUP" | "SIGNIN" | "LOGOUT" | "SET_AUTH";
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
+    const { addToast } = useToastContext();
     const [auth, authDispatch] = useReducer(
         (state: AuthType, action: CustomeAction<AllPayload, AllType>) => {
             switch (action.type) {
@@ -94,7 +96,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",
@@ -116,7 +118,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
                 login({ email: payload.email, password: payload.password });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",

@@ -1,7 +1,7 @@
 import { useMemberContext } from "@/context";
 import { ActivityType, CotisationType, MemberType } from "@/context/type";
 import { Popover } from "antd";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AiOutlineMore } from "react-icons/ai";
 
 const MemberCard = ({
@@ -28,6 +28,11 @@ const MemberCard = ({
         tooglePop(false);
     };
 
+    const isActivityFinish = useMemo(
+        () => new Date(activity?.end) < new Date(),
+        [activity],
+    );
+
     return (
         <div className="shadow-lg py-4 px-2 rounded">
             <h4>
@@ -50,8 +55,14 @@ const MemberCard = ({
                     content={
                         <ul>
                             <li
-                                className="cursor-pointer"
-                                onClick={setBeneficiar}
+                                className={`py-1  ${
+                                    isActivityFinish
+                                        ? "text-neutral-300 cursor-not-allowed"
+                                        : "cursor-pointer"
+                                }`}
+                                onClick={() =>
+                                    !isActivityFinish && setBeneficiar()
+                                }
                             >
                                 Designer bénéficier
                             </li>

@@ -10,6 +10,7 @@ import {
 } from "./type";
 import { useAuth } from "@/hooks";
 import { v4 as uuid_v4 } from "uuid";
+import { useToastContext } from "./ToastContext";
 
 // ----------------- CONTEXT -----------------
 const memberContext = createContext<MemberContextType<AllType>>({});
@@ -23,6 +24,8 @@ type AllType =
 
 // ----------------- PROVIDER -----------------
 const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
+    const { addToast } = useToastContext();
+
     const {
         auth: { token },
     } = useAuth();
@@ -105,7 +108,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",
@@ -127,7 +130,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",
@@ -151,7 +154,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",
@@ -173,7 +176,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
                 });
             })
             .catch((error) => {
-                alert(error.message);
+                addToast({ content: error.message, type: "ERROR" });
                 setThread({
                     id,
                     type: "error",

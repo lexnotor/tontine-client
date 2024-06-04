@@ -6,7 +6,7 @@
 @layer utilities {
 
     * {
-        font-family: "Montserrat";
+        font-family: "Montserrat", Helvetica, "Ubuntu", sans-serif;
     }
 
     body {
