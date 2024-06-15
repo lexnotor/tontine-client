@@ -73,7 +73,6 @@ const AddFee = () => {
                             name="first"
                             id="first"
                             ref={amountRef}
-                            defaultValue={currentActivity?.amount_to_give}
                             value={currentActivity?.amount_to_give}
                             className="w-[calc(100%-4rem)] border px-4 py-1 rounded-lg cursor-not-allowed"
                             disabled
@@ -84,11 +83,6 @@ const AddFee = () => {
                             value={currentActivity?.currency}
                             id=""
                             className="w-[4rem] px-2 py-2 border bg-transparent rounded-lg cursor-not-allowed"
-                            defaultValue={
-                                currentActivity?.currency == "USD"
-                                    ? "usd"
-                                    : "fc"
-                            }
                         >
                             <option value="usd">USD</option>
                             <option value="fc">FC</option>

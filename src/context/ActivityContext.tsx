@@ -96,10 +96,10 @@ const ActivityContextProvider = ({
         [],
     );
 
-    const getAllActivities = () => {
+    const getAllActivities = async () => {
         const id = uuid_v4();
         setThread({ payload: { action: "SET_ACTIVITIES", id }, type: "add" });
-        activityService
+        return activityService
             .getAllActivities(token?.token)
             .then((data) => {
                 activitiesDisp({ type: "SET_ACTIVITIES", payload: data });
@@ -117,10 +117,10 @@ const ActivityContextProvider = ({
             });
     };
 
-    const createActivity = (payload: CreateActivityPayload) => {
+    const createActivity = async (payload: CreateActivityPayload) => {
         const id = uuid_v4();
         setThread({ payload: { action: "ADD_ACTIVITY", id }, type: "add" });
-        activityService
+        return activityService
             .createActivity(payload, token?.token)
             .then(() => {
                 // activitiesDisp({ type: "ADD_ACTIVITY", payload: data });
@@ -139,13 +139,13 @@ const ActivityContextProvider = ({
             });
     };
 
-    const updateActivity = (
+    const updateActivity = async (
         activityId: string,
         payload: Partial<CreateActivityPayload>,
     ) => {
         const id = uuid_v4();
         setThread({ payload: { action: "REPLACE_ACTIVITY", id }, type: "add" });
-        activityService
+        return activityService
             .updateActivity(activityId, payload, token?.token)
             .then((data) => {
                 activitiesDisp({ type: "REPLACE_ACTIVITY", payload: data });
@@ -163,10 +163,10 @@ const ActivityContextProvider = ({
             });
     };
 
-    const deleteActivity = (payload: string) => {
+    const deleteActivity = async (payload: string) => {
         const id = uuid_v4();
         setThread({ payload: { action: "REMOVE_ACTIVITY", id }, type: "add" });
-        activityService
+        return activityService
             .deleteActivity(payload, token?.token)
             .then(() => {
                 activitiesDisp({ type: "REMOVE_ACTIVITY", payload });
@@ -183,6 +183,7 @@ const ActivityContextProvider = ({
                 });
             });
     };
+
     return (
         <activityContext.Provider
             value={{

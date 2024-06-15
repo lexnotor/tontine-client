@@ -10,9 +10,10 @@ const detail_cycle: Record<ActivityType["cycle"], number> = {
 const getCycleNumber = (
     startDate: string,
     cycleType: ActivityType["cycle"],
+    todayDate = new Date().toISOString(),
 ) => {
     const start = new Date(startDate);
-    const today = new Date();
+    const today = new Date(todayDate);
 
     return Math.ceil(
         (today.getTime() - start.getTime()) / detail_cycle[cycleType],

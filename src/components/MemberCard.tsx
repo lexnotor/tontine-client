@@ -18,15 +18,28 @@ const MemberCard = ({
     const [popOpened, tooglePop] = useState<boolean>(false);
     const { updateMember } = useMemberContext();
     const setBeneficiar = () => {
-        allMember
-            .filter((item) => item?.id != member?.id)
-            .filter((item) => item?.status == "isBeneficiary")
-            .forEach((item) => {
-                updateMember(item?.id, { status: "isNoBeneficiary" });
-            });
+        Promise.all(
+            allMember
+                .filter((item) => item?.id != member?.id)
+                .filter((item) => item?.status == "isBeneficiary")
+                .map((item) => {
+                    return updateMember(item?.id, {
+                        status: "isNoBeneficiary",
+                    });
+                }),
+        );
         updateMember(member?.id, { status: "isBeneficiary" });
         tooglePop(false);
     };
+
+    const unSetBeneficiar = () => {
+        updateMember(member?.id, { status: "isNoBeneficiary" });
+    };
+
+    const isBeneficiary = useMemo(
+        () => member?.status == "isBeneficiary",
+        [member],
+    );
 
     const isActivityFinish = useMemo(
         () => new Date(activity?.end) < new Date(),
@@ -34,7 +47,11 @@ const MemberCard = ({
     );
 
     return (
-        <div className="shadow-lg py-4 px-2 rounded">
+        <div
+            className={`shadow-lg py-4 px-2 rounded ${
+                isBeneficiary ? "bg-blue-100/60 font-semibold" : ""
+            }`}
+        >
             <h4>
                 {member?.name} {member?.postname}
             </h4>
@@ -61,15 +78,22 @@ const MemberCard = ({
                                         : "cursor-pointer"
                                 }`}
                                 onClick={() =>
-                                    !isActivityFinish && setBeneficiar()
+                                    !isActivityFinish &&
+                                    (isBeneficiary
+                                        ? unSetBeneficiar()
+                                        : setBeneficiar())
                                 }
                             >
-                                Designer bénéficier
+                                {isBeneficiary
+                                    ? "Revoquer bénéficier"
+                                    : "Designer bénéficier"}
                             </li>
                         </ul>
                     }
                 >
-                    <AiOutlineMore />
+                    <span>
+                        <AiOutlineMore />
+                    </span>
                 </Popover>
             </p>
         </div>

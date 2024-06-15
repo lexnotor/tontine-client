@@ -82,10 +82,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         [],
     );
 
-    const login = (payload: LoginPayload) => {
+    const login = async (payload: LoginPayload) => {
         const id = uuid_v4();
         setThread({ payload: { action: "SIGNIN", id }, type: "add" });
-        authService
+        return authService
             .login(payload)
             .then((data) => {
                 authDispatch({ type: "SIGNIN", payload: data });
@@ -104,10 +104,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
             });
     };
 
-    const signup = (payload: SignupPayload) => {
+    const signup = async (payload: SignupPayload) => {
         const id = uuid_v4();
         setThread({ payload: { action: "SIGNUP", id }, type: "add" });
-        authService
+        return authService
             .login(payload)
             .then(() => {
                 authDispatch({ type: "SIGNUP" });

@@ -1,5 +1,5 @@
-import axios from "axios";
-import { AddMemberPayload } from "./type";
+import axios, { AxiosResponse } from "axios";
+import { AddMemberPayload, UpdateMemberResponse } from "./type";
 import { memberUrl } from "./constante";
 
 const getAllMember = async (token: string) => {
@@ -62,7 +62,7 @@ const updateOne = async (
     const { name, phone, postname, status } = payload;
 
     try {
-        const res = await axios.put(
+        const res: AxiosResponse<UpdateMemberResponse> = await axios.patch(
             memberUrl.updateOne(memberId),
             {
                 name,
@@ -73,7 +73,7 @@ const updateOne = async (
             { headers: { Authorization: `Bearer ${token}` } },
         );
 
-        return res.data;
+        return res.data.data;
     } catch (error) {
         throw new Error("FAIL_TO_UPDATE_MEMBER");
     }

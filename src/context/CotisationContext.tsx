@@ -100,10 +100,10 @@ const CotisationContextProvider = ({
         [],
     );
 
-    const getAllCotisations = () => {
+    const getAllCotisations = async () => {
         const id = uuid_v4();
         setThread({ payload: { action: "SET_COTISATIONS", id }, type: "add" });
-        cotisationService
+        return cotisationService
             .getAllCotisation(token?.token)
             .then((data) => {
                 cotisationsDisp({ type: "SET_COTISATIONS", payload: data });
@@ -121,10 +121,10 @@ const CotisationContextProvider = ({
             });
     };
 
-    const createCotisation = (payload: SaveCotisatioPayload) => {
+    const createCotisation = async (payload: SaveCotisatioPayload) => {
         const id = uuid_v4();
         setThread({ payload: { action: "ADD_COTISATION", id }, type: "add" });
-        cotisationService
+        return cotisationService
             .createCotisation(payload, token?.token)
             .then(() => {
                 // cotisationsDisp({ type: "ADD_COTISATION", payload: data });
@@ -143,7 +143,7 @@ const CotisationContextProvider = ({
             });
     };
 
-    const updateCotisation = (
+    const updateCotisation = async (
         cotisationId: string,
         payload: Partial<SaveCotisatioPayload>,
     ) => {
@@ -152,7 +152,7 @@ const CotisationContextProvider = ({
             payload: { action: "REPLACE_COTISATION", id },
             type: "add",
         });
-        cotisationService
+        return cotisationService
             .updateCotisation(cotisationId, payload, token?.token)
             .then((data) => {
                 cotisationsDisp({ type: "REPLACE_COTISATION", payload: data });
@@ -170,13 +170,13 @@ const CotisationContextProvider = ({
             });
     };
 
-    const deleteCotisation = (payload: string) => {
+    const deleteCotisation = async (payload: string) => {
         const id = uuid_v4();
         setThread({
             payload: { action: "REMOVE_COTISATION", id },
             type: "add",
         });
-        cotisationService
+        return cotisationService
             .deleteCotisation(payload, token?.token)
             .then(() => {
                 // cotisationsDisp({ type: "REMOVE_COTISATION", payload });

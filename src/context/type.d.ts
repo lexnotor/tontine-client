@@ -5,42 +5,45 @@ export interface RequestContextType {}
 export interface AuthContextType<AllType = any> {
     auth?: AuthType;
     authStatus?: "LOOKING" | "CONNECTED" | "DISCONNECTED";
-    login?: (payload: LoginPayload) => void;
-    signup?: (payload: SignupPayload) => void;
+    login?: (payload: LoginPayload) => Promise<void>;
+    signup?: (payload: SignupPayload) => Promise<void>;
     logout?: () => void;
     thread?: ThreadType<AllType>[];
 }
 
 export interface ActivityContextType<AllType = any> {
     activities?: ActivityType[];
-    getAllActivities?: () => void;
-    createActivity?: (payload: CreateActivityPayload) => void;
-    deleteActivity?: (payload: string) => void;
+    getAllActivities?: () => Promise<void>;
+    createActivity?: (payload: CreateActivityPayload) => Promise<void>;
+    deleteActivity?: (payload: string) => Promise<void>;
     updateActivity?: (
         id: string,
         payload: Partial<CreateActivityPayload>,
-    ) => void;
+    ) => Promise<void>;
     thread?: ThreadType<AllType>[];
 }
 
 export interface MemberContextType<AllType = any> {
     members?: MemberType[];
-    getAllMembers?: () => void;
-    createMember?: (payload: AddMemberPayload) => void;
-    deleteMember?: (payload: string) => void;
-    updateMember?: (id: string, payload: Partial<AddMemberPayload>) => void;
+    getAllMembers?: () => Promise<void>;
+    createMember?: (payload: AddMemberPayload) => Promise<void>;
+    deleteMember?: (payload: string) => Promise<void>;
+    updateMember?: (
+        id: string,
+        payload: Partial<AddMemberPayload>,
+    ) => Promise<MemberType | void>;
     thread?: ThreadType<AllType>[];
 }
 
 export interface CotisationContextType<AllType = any> {
     cotisations?: CotisationType[];
-    getAllCotisations?: () => void;
-    createCotisation?: (payload: SaveCotisatioPayload) => void;
-    deleteCotisation?: (payload: string) => void;
+    getAllCotisations?: () => Promise<void>;
+    createCotisation?: (payload: SaveCotisatioPayload) => Promise<void>;
+    deleteCotisation?: (payload: string) => Promise<void>;
     updateCotisation?: (
         id: string,
         payload: Partial<SaveCotisatioPayload>,
-    ) => void;
+    ) => Promise<void>;
     thread?: ThreadType<AllType>[];
 }
 
@@ -112,6 +115,8 @@ export interface CotisationType {
     amount: number;
     activity_id: string;
     member_id: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface ThreadType<T = string> {

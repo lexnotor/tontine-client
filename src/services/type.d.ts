@@ -1,3 +1,5 @@
+import { MemberType } from "@/context/type";
+
 export interface LoginPayload {
     email: string;
     password: string;
@@ -15,6 +17,12 @@ export interface AddMemberPayload {
     phone: string;
     activity_id: string;
     status: "isBeneficiary" | "isNoBeneficiary";
+}
+
+export interface UpdateMemberPayload extends Partial<AddMemberPayload> {}
+
+export interface UpdateMemberResponse {
+    data: MemberType;
 }
 
 export interface CreateActivityPayload {

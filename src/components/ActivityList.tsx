@@ -2,11 +2,23 @@ import { useAppContext } from "@/context";
 import { ActivityType } from "@/context/type";
 import { Popover } from "antd";
 import { motion } from "framer-motion";
+import { useMemo } from "react";
 import { LuSettings2 } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
 const ActivityList = ({ data }: { data: ActivityType[] }) => {
     const { setCreatingActivity } = useAppContext();
+    const sortedData = useMemo(
+        () =>
+            [...data].sort((a, b) => {
+                const [isAEnd, isBend] = [
+                    new Date(a?.end) < new Date(),
+                    new Date(b?.end) < new Date(),
+                ];
+                return isAEnd && isBend ? 0 : isAEnd ? 1 : -1;
+            }),
+        [data],
+    );
 
     return (
         <div className="page">
@@ -40,7 +52,7 @@ const ActivityList = ({ data }: { data: ActivityType[] }) => {
                 </span>
             </h1>
             <ul className="flex flex-col gap-1">
-                {data.map((item) => (
+                {sortedData.map((item) => (
                     <motion.li
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}

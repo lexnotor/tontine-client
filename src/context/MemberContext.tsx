@@ -1,5 +1,5 @@
 import { memberService } from "@/services";
-import { AddMemberPayload } from "@/services/type";
+import { AddMemberPayload, UpdateMemberPayload } from "@/services/type";
 import React, { createContext, useContext, useReducer } from "react";
 import {
     CustomeAction,
@@ -50,7 +50,10 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
                     else
                         return [
                             ...state.slice(0, index),
-                            action.payload as MemberType,
+                            {
+                                ...state[index],
+                                ...(action.payload as MemberType),
+                            },
                             ...state.slice(index + 1),
                         ];
                 }
@@ -94,11 +97,11 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
         [],
     );
 
-    const getAllMembers = () => {
+    const getAllMembers = async () => {
         const id = uuid_v4();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
 
-        memberService
+        return memberService
             .getAllMember(token?.token)
             .then((data) => {
                 membersDisp({ type: "SET_MEMBERS", payload: data });
@@ -116,10 +119,10 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
             });
     };
 
-    const createMember = (payload: AddMemberPayload) => {
+    const createMember = async (payload: AddMemberPayload) => {
         const id = uuid_v4();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
-        memberService
+        return memberService
             .addMember(payload, token?.token)
             .then(() => {
                 // membersDisp({ type: "ADD_MEMBER", payload: data });
@@ -138,13 +141,13 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
             });
     };
 
-    const updateMember = (
+    const updateMember = async (
         memberId: string,
-        payload: Partial<AddMemberPayload>,
+        payload: UpdateMemberPayload,
     ) => {
         const id = uuid_v4();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
-        memberService
+        return memberService
             .updateOne(memberId, payload, token?.token)
             .then((data) => {
                 membersDisp({ type: "REPLACE_MEMBER", payload: data });
@@ -152,6 +155,7 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
                     id,
                     type: "success",
                 });
+                return data;
             })
             .catch((error) => {
                 addToast({ content: error.message, type: "ERROR" });
@@ -162,10 +166,10 @@ const MemberContextProvider = ({ children }: { children: React.ReactNode }) => {
             });
     };
 
-    const deleteMember = (payload: string) => {
+    const deleteMember = async (payload: string) => {
         const id = uuid_v4();
         setThread({ payload: { action: "SET_MEMBERS", id }, type: "add" });
-        memberService
+        return memberService
             .deleteMember(payload, token?.token)
             .then(() => {
                 // membersDisp({ type: "REMOVE_MEMBER", payload });

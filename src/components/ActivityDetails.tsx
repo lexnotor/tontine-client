@@ -1,15 +1,17 @@
 import { useAppContext } from "@/context";
+import { useToastContext } from "@/context/ToastContext";
+import getCycleNumber from "@/functions/getCycleNumber";
 import { useActivity, useCotisation, useMembers } from "@/hooks";
 import { Popover, Tag } from "antd";
-import { useMemo, useRef } from "react";
+import { motion } from "framer-motion";
+import { useMemo, useRef, useState } from "react";
 import { CiTimer, CiUser } from "react-icons/ci";
 import { GiBackwardTime } from "react-icons/gi";
-import { LuSettings2 } from "react-icons/lu";
+import { LuMenu } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import MemberCard from "./MemberCard";
-import { motion } from "framer-motion";
-import getCycleNumber from "@/functions/getCycleNumber";
-import { useToastContext } from "@/context/ToastContext";
+import { generePdf } from "@/functions/printActivity";
+import CotisationTable from "./CotisationTable";
 
 const ActivityDetails = ({ activityId }: { activityId?: string }) => {
     const { setSavingFees, setAddingMember, setDeletingMember } =
@@ -39,6 +41,13 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
         [currentActivity],
     );
 
+    const printActivityDetail = () => {
+        generePdf(currentActivity, cotisations, memberList);
+        setIsMenuOpen(false);
+    };
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     return (
         <motion.div
             initial={{ opacity: 0.5 }}
@@ -60,16 +69,18 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                     <Popover
                         trigger={["click"]}
                         destroyTooltipOnHide
+                        open={isMenuOpen}
+                        onOpenChange={(visible) => setIsMenuOpen(visible)}
                         arrow={false}
                         content={() => (
-                            <ul className="flex flex-col">
+                            <ul className="flex flex-col [&>li:hover]:bg-neutral-200 [&>li]:duration-500">
                                 <li
                                     className={`py-1  ${
                                         isActivityFinish
                                             ? "text-neutral-300 cursor-not-allowed"
                                             : "cursor-pointer"
                                     }`}
-                                    onClick={() =>
+                                    onClick={() => {
                                         !isActivityFinish
                                             ? setAddingMember({
                                                   activity: currentActivity?.id,
@@ -79,8 +90,9 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                                                   content:
                                                       "L'activité est términé",
                                                   type: "ERROR",
-                                              })
-                                    }
+                                              });
+                                        setIsMenuOpen(false);
+                                    }}
                                 >
                                     Ajouter un membre
                                 </li>
@@ -90,7 +102,7 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                                             ? "text-neutral-300 cursor-not-allowed"
                                             : "cursor-pointer"
                                     }`}
-                                    onClick={() =>
+                                    onClick={() => {
                                         !isActivityFinish
                                             ? setDeletingMember({
                                                   activity: currentActivity?.id,
@@ -100,8 +112,9 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                                                   content:
                                                       "L'activité est términé",
                                                   type: "ERROR",
-                                              })
-                                    }
+                                              });
+                                        setIsMenuOpen(false);
+                                    }}
                                 >
                                     Supprimer un membre
                                 </li>
@@ -111,7 +124,7 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                                             ? "text-neutral-300 cursor-not-allowed"
                                             : "cursor-pointer"
                                     }`}
-                                    onClick={() =>
+                                    onClick={() => {
                                         !isActivityFinish
                                             ? setSavingFees({
                                                   activity: currentActivity?.id,
@@ -121,16 +134,23 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                                                   content:
                                                       "L'activité est términé",
                                                   type: "ERROR",
-                                              })
-                                    }
+                                              });
+                                        setIsMenuOpen(false);
+                                    }}
                                 >
                                     Enregistrer une contisation
+                                </li>
+                                <li
+                                    className={"py-1 cursor-pointer"}
+                                    onClick={() => printActivityDetail()}
+                                >
+                                    Imprimer détails
                                 </li>
                             </ul>
                         )}
                     >
                         <span>
-                            <LuSettings2 />
+                            <LuMenu />
                         </span>
                     </Popover>
                 </span>
@@ -193,7 +213,7 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                         <div className="flex gap-2 items-center">
                             <span className="text-[85%]">
                                 {beneficiar
-                                    ? beneficiar?.name
+                                    ? `${beneficiar?.name} ${beneficiar?.postname}`
                                     : "Aucun beneficiére"}
                             </span>
                         </div>
@@ -230,6 +250,19 @@ const ActivityDetails = ({ activityId }: { activityId?: string }) => {
                             allMember={memberList}
                         />
                     ))}
+                </div>
+            </section>
+
+            <section className="py-4 my-4">
+                <h2 className="font-bold my-4">Cotisations</h2>
+                <div className="">
+                    <CotisationTable
+                        data={cotisations.filter(
+                            (item) => item.activity_id == currentActivity.id,
+                        )}
+                        membres={memberList}
+                        currentActivity={currentActivity}
+                    />
                 </div>
             </section>
         </motion.div>
